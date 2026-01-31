@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      prefWidth="280"
+      spacing="14"
+      stylesheets="@sidebar.css"
+      styleClass="sidebar"
+      fx:controller="es.cifpcarlos3.pimandragora.presentation.controllers.components.SidebarController">
+
+    <padding>
+        <Insets top="18" right="16" bottom="16" left="16"/>
+    </padding>
+
+    <!-- Brand -->
+    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="sidebar-brand">
+        <StackPane styleClass="brand-mark">
+            <Label text="M" styleClass="brand-mark-text"/>
+        </StackPane>
+
+        <VBox spacing="2">
+            <Label text="Mandrágora" styleClass="brand-title"/>
+            <Label text="Backoffice" styleClass="brand-subtitle"/>
+        </VBox>
+    </HBox>
+
+    <!-- User -->
+    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="user-card">
+        <StackPane styleClass="avatar">
+            <Label text="P" styleClass="avatar-text"/>
+        </StackPane>
+
+        <VBox spacing="1" HBox.hgrow="ALWAYS">
+            <Label fx:id="userNameLabel" text="-" styleClass="user-name"/>
+            <Label fx:id="userEmailLabel" text="-" styleClass="user-email"/>
+        </VBox>
+        <Button fx:id="profileButton" styleClass="icon-button">
+            <graphic>
+                <FontIcon iconLiteral="mdi2c-cog-outline" styleClass="nav-icon"/>
+            </graphic>
+        </Button>
+    </HBox>
+
+    <Separator styleClass="sidebar-sep"/>
+
+    <!-- Nav -->
+    <VBox spacing="8" styleClass="nav">
+
+        <Button fx:id="booksButton" maxWidth="Infinity" onAction="#goToBooks" styleClass="nav-item" text="Libros">
+            <graphic>
+                <FontIcon iconLiteral="mdi2b-book-open-page-variant" styleClass="nav-icon"/>
+            </graphic>
+        </Button>
+
+        <Button fx:id="authorButton" maxWidth="Infinity" onAction="#goToAuthors" styleClass="nav-item" text="Autores">
+            <graphic>
+                <FontIcon iconLiteral="mdi2a-account-edit" styleClass="nav-icon"/>
+            </graphic>
+        </Button>
+
+        <Button fx:id="categoryButton" maxWidth="Infinity" onAction="#goToCategories" styleClass="nav-item"
+                text="Categorías">
+            <graphic>
+                <FontIcon iconLiteral="mdi2t-tag-multiple" styleClass="nav-icon"/>
+            </graphic>
+        </Button>
+
+        <Button fx:id="settingsButton" maxWidth="Infinity" onAction="#goToSettings" styleClass="nav-item"
+                text="Sobre nosotras">
+            <graphic>
+                <FontIcon iconLiteral="mdi2i-information-outline" styleClass="nav-icon"/>
+            </graphic>
+        </Button>
+
+        <Button fx:id="helpButton" maxWidth="Infinity" onAction="#goToHelp" styleClass="nav-item" text="Ayuda">
+            <graphic>
+                <FontIcon iconLiteral="mdi2h-help-circle-outline" styleClass="nav-icon"/>
+            </graphic>
+        </Button>
+
+    </VBox>
+
+    <Pane VBox.vgrow="ALWAYS"/>
+
+    <!-- Footer -->
+    <VBox spacing="6" styleClass="sidebar-footer">
+        <Button fx:id="logoutButton"
+                maxWidth="Infinity"
+                onAction="#logout"
+                styleClass="nav-item"
+                text="Cerrar sesión">
+            <graphic>
+                <FontIcon iconLiteral="mdi2l-logout" styleClass="nav-icon"/>
+            </graphic>
+        </Button>
+        <Label text="v0.1 • Mandrágora" styleClass="footer-text"/>
+    </VBox>
+
+</VBox>

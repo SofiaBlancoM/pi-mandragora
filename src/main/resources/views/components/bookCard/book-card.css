@@ -1,0 +1,111 @@
+.book-card {
+    -fx-background-color: rgba(255,255,255,0.96);
+    -fx-background-radius: 18px;
+    -fx-border-radius: 18px;
+    -fx-border-color: rgba(0,0,0,0.08);
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 18, 0.18, 0, 6);
+}
+
+.book-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.16), 22, 0.2, 0, 8);
+    -fx-border-color: rgba(0,0,0,0.12);
+}
+
+/* Cover container */
+.cover-container {
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+    -fx-background-color: rgba(0,0,0,0.035);
+    -fx-padding: 8px;
+}
+
+/* Typography */
+.book-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: 800;
+    -fx-text-fill: rgba(0,0,0,0.92);
+}
+
+.book-author {
+    -fx-font-size: 12px;
+    -fx-text-fill: rgba(0,0,0,0.72);
+}
+
+.book-category {
+    -fx-font-size: 11px;
+    -fx-text-fill: rgba(0,0,0,0.58);
+}
+
+/* Chips */
+.chips-row {
+    -fx-padding: 2 0 0 0;
+}
+
+.chip {
+    -fx-background-radius: 999;
+    -fx-padding: 4 10 4 10;
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+}
+
+.chip-muted {
+    -fx-background-color: rgba(0,0,0,0.06);
+    -fx-text-fill: rgba(0,0,0,0.65);
+}
+
+.chip-price {
+    -fx-background-color: rgba(25, 118, 210, 0.10); /* blue-ish */
+    -fx-text-fill: rgba(25, 118, 210, 0.95);
+}
+
+/* Badge */
+.status-badge {
+    -fx-background-radius: 999;
+    -fx-padding: 4 10 4 10;
+    -fx-font-size: 10px;
+    -fx-font-weight: 800;
+    -fx-text-fill: white;
+
+    /* IMPORTANT: do NOT align the label in layout */
+    -fx-alignment: center;
+
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 10, 0.15, 0, 2);
+}
+
+/* ACTIVE */
+.book-card.status-active {
+    /* default */
+}
+
+/* OUT OF STOCK */
+.book-card.status-outofstock {
+    -fx-border-color: rgba(245, 124, 0, 0.40);
+}
+
+.book-card.status-outofstock .status-badge {
+    -fx-background-color: rgba(245, 124, 0, 0.92);
+}
+
+.book-card.status-outofstock .cover-container {
+    -fx-background-color: rgba(245, 124, 0, 0.06);
+}
+
+/* slightly dim content */
+.book-card.status-outofstock .content {
+    -fx-opacity: 0.92;
+}
+
+/* DISCONTINUED */
+.book-card.status-discontinued {
+    -fx-opacity: 0.72;
+    -fx-border-color: rgba(198, 40, 40, 0.45);
+}
+
+.book-card.status-discontinued .status-badge {
+    -fx-background-color: rgba(198, 40, 40, 0.92);
+}
+
+.book-card.status-discontinued .cover-container {
+    -fx-background-color: rgba(198, 40, 40, 0.06);
+}

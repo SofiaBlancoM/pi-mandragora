@@ -1,0 +1,24 @@
+.app-root {
+    -fx-background-color: -c-bg;
+}
+
+/* Left sidebar area */
+.sidebar-container {
+    -fx-background-color: -c-surface;
+    -fx-border-color: -c-border;
+    -fx-border-width: 0 1px 0 0;
+    -fx-effect: -shadow-1;
+}
+
+/* Center content area */
+.content-container {
+    -fx-background-color: transparent;
+}
+
+/* Your page host gets a subtle “panel” feel */
+.content-host {
+    -fx-background-color: transparent;
+
+    /* IMPORTANT: avoid lookup var here to prevent Double->Size cast warning */
+    -fx-background-radius: 18px;
+}

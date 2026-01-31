@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.StackPane?>
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="es.cifpcarlos3.pimandragora.presentation.books.controllers.pages.BookCreateController"
+           fx:id="contentHost"/>

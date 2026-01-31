@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" prefHeight="720" prefWidth="1200" stylesheets="@login.css"
+            fx:controller="es.cifpcarlos3.pimandragora.presentation.controllers.pages.LoginController">
+
+    <!-- LEFT: Form -->
+    <left>
+        <StackPane styleClass="login-left">
+            <VBox alignment="CENTER" maxWidth="801.0" prefHeight="720.0" prefWidth="781.0" spacing="24.0"
+                  styleClass="login-card">
+                <padding>
+                    <Insets bottom="28.0" left="28.0" right="28.0" top="16.0"/>
+                </padding>
+                <VBox alignment="CENTER">
+                    <Label text="Librería Mandrágora">
+                        <font>
+                            <Font size="48.0"/>
+                        </font>
+                    </Label>
+                    <Label text="Backoffice">
+                        <font>
+                            <Font size="36.0"/>
+                        </font>
+                    </Label>
+                </VBox>
+
+                <VBox alignment="CENTER" spacing="24.0">
+                    <VBox maxWidth="400.0" spacing="6">
+                        <Label styleClass="field-label" text="Email"/>
+                        <TextField fx:id="emailField" maxWidth="400.0" promptText="you@example.com"/>
+                    </VBox>
+
+                    <VBox maxWidth="400.0" spacing="6">
+                        <Label styleClass="field-label" text="Password"/>
+                        <PasswordField fx:id="passwordField" maxWidth="400.0" promptText="••••••••"/>
+                    </VBox>
+
+                    <Label fx:id="errorLabel" managed="false" styleClass="error" visible="false"/>
+
+                    <Button maxWidth="100.0" onAction="#onLogin" styleClass="primary-button" text="Login"/>
+
+                    <Separator/>
+                    <Button maxWidth="100.0" onAction="#onAutoLoging" styleClass="primary-button" text="Auto login"/>
+                </VBox>
+            </VBox>
+        </StackPane>
+    </left>
+
+    <!-- RIGHT: Image / Hero -->
+    <center>
+        <StackPane styleClass="login-right">
+            <VBox alignment="CENTER" maxWidth="520" spacing="16">
+                <ImageView fitHeight="391.0" fitWidth="250.0" preserveRatio="true">
+                    <Image url="@../../../assets/images/default-cover-book-image.png"/>
+                </ImageView>
+
+                <VBox alignment="CENTER" spacing="6">
+                    <Label styleClass="hero-title" text="Manage your library faster"/>
+                    <Label styleClass="hero-subtitle" text="Search, organize and track your content in one place."
+                           wrapText="true"/>
+                </VBox>
+            </VBox>
+        </StackPane>
+    </center>
+
+</BorderPane>

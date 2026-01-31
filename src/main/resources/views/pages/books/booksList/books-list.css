@@ -1,0 +1,39 @@
+.page-root {
+    -fx-background-color: transparent;
+}
+
+/* This column is what makes everything align nicely */
+.page-container {
+    -fx-alignment: top-center;
+}
+
+/* Give header + body the same "surface" look */
+.page-header, .page-body {
+    -fx-background-color: rgba(255,255,255,0.92);
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: rgba(0,0,0,0.08);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 16, 0.18, 0, 4);
+    -fx-padding: 16;
+}
+
+/* Filters */
+.filters-bar {
+    -fx-padding: 4 0 0 0;
+}
+
+/* Consistent widths so they don't stretch weirdly */
+.filter-group {
+    -fx-min-width: 170;
+    -fx-pref-width: 185;
+    -fx-max-width: 210;
+}
+
+.search-field, .filter-box {
+    -fx-min-height: 38;
+}
+
+/* Pagination should not add its own background */
+.books-pagination {
+    -fx-background-color: transparent;
+}

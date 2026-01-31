@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="es.cifpcarlos3.pimandragora.presentation.books.controllers.components.BookCardController"
+      fx:id="root"
+      stylesheets="@book-card.css"
+      spacing="10"
+      prefWidth="240"
+      styleClass="book-card">
+
+    <padding>
+        <Insets top="12" right="12" bottom="12" left="12"/>
+    </padding>
+
+    <!-- Cover -->
+    <StackPane styleClass="cover-container">
+        <ImageView fx:id="coverImageView"
+                   fitHeight="260"
+                   fitWidth="216"
+                   preserveRatio="true"
+                   pickOnBounds="true">
+            <Image url="@../../../assets/images/default-cover-book-image.png"/>
+        </ImageView>
+
+        <!-- Badge top-left -->
+        <Label fx:id="statusBadge"
+               visible="false"
+               managed="false"
+               styleClass="status-badge"
+               StackPane.alignment="TOP_LEFT"/>
+    </StackPane>
+
+    <!-- Text content -->
+    <VBox spacing="6" styleClass="content">
+        <Label fx:id="titleLabel" wrapText="true" styleClass="book-title"/>
+        <Label fx:id="authorLabel" styleClass="book-author"/>
+        <Label fx:id="categoryLabel" styleClass="book-category"/>
+
+        <HBox alignment="CENTER_LEFT" spacing="8" styleClass="chips-row">
+            <Label fx:id="yearLabel" styleClass="chip chip-muted"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="priceLabel" visible="false" managed="false" styleClass="chip chip-price"/>
+        </HBox>
+    </VBox>
+
+</VBox>

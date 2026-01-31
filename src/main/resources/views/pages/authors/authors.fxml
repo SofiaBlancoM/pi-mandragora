@@ -1,0 +1,25 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="es.cifpcarlos3.pimandragora.presentation.controllers.pages.AuthorsController"
+            stylesheets="@authors.css">
+
+    <top>
+        <Label text="Authors"
+               styleClass="page-title"
+               BorderPane.alignment="CENTER_LEFT"/>
+    </top>
+
+    <center>
+        <TableView fx:id="authorsTable">
+
+            <columns>
+                <TableColumn fx:id="firstNameColumn" text="Nombre"/>
+                <TableColumn fx:id="lastNameColumn" text="Apellidos"/>
+                <TableColumn fx:id="booksColumn" text="Número de libros publicados"/>
+            </columns>
+
+        </TableView>
+    </center>
+
+</BorderPane>
