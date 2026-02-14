@@ -2,6 +2,7 @@ package es.cifpcarlos3.pimandragora.presentation.controllers.layouts;
 
 import es.cifpcarlos3.pimandragora.presentation.app.navigation.PageNavigator;
 import es.cifpcarlos3.pimandragora.presentation.app.navigation.routes.PageRoutes;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
 
@@ -14,5 +15,15 @@ public class MainLayoutController {
     private void initialize() {
         PageNavigator.bindHost(contentHost);
         PageNavigator.goTo(PageRoutes.BOOKS);
+    }
+
+    @FXML
+    private void onBooksClicked() {
+        PageNavigator.goTo(PageRoutes.BOOKS);
+    }
+
+    @FXML
+    private void onCategoriesClicked() {
+        PageNavigator.goTo(PageRoutes.GENRES);
     }
 }

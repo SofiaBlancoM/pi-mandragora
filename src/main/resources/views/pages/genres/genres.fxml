@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="es.cifpcarlos3.pimandragora.presentation.controllers.pages.GenresController"
+           stylesheets="@genres.css"
+           styleClass="page-root">
+
+    <VBox spacing="14" styleClass="page-container" maxWidth="1180">
+        <padding>
+            <Insets top="16" right="16" bottom="16" left="16"/>
+        </padding>
+
+        <VBox spacing="12" styleClass="page-header">
+            <VBox spacing="2">
+                <Label text="Categorías" styleClass="page-title"/>
+                <Label text="Selecciona un género para ver sus libros disponibles."
+                       styleClass="muted"/>
+            </VBox>
+        </VBox>
+
+        <VBox spacing="10" styleClass="page-body" VBox.vgrow="ALWAYS">
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+                <FlowPane fx:id="categoriesGrid" hgap="20" vgap="20">
+                </FlowPane>
+            </ScrollPane>
+        </VBox>
+    </VBox>
+</StackPane>

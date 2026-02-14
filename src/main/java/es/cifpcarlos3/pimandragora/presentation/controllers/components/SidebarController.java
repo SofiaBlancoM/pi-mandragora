@@ -83,7 +83,7 @@ public class SidebarController {
     public void goToCategories(ActionEvent e) {
         log.info("Navigate: Categories");
         selectNav(categoryButton);
-        // PageNavigator.goTo(PageRoutes.CATEGORIES);
+        PageNavigator.goTo(PageRoutes.GENRES);
     }
 
     public void goToHelp(ActionEvent e) {
@@ -108,7 +108,7 @@ public class SidebarController {
             context.logout();
             log.info("Logout completed");
         } catch (Exception ex) {
-            // No bloquees el logout local por un fallo de red
+
             log.warn("Logout failed (will clear local session anyway)", ex);
         } finally {
             SupabaseSession.clear();

@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.UUID;
 
 public class BookListController {
 
@@ -311,5 +312,12 @@ public class BookListController {
                 suppressFilterEvents = false;
             }
         });
+    }
+
+    public void setInitialCategory(UUID categoryId) {
+        categoryFilter.getItems().stream()
+                .filter(cat -> cat.id().equals(categoryId))
+                .findFirst()
+                .ifPresent(categoryFilter.getSelectionModel()::select);
     }
 }

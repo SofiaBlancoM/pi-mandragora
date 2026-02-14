@@ -1,0 +1,46 @@
+/* Heredamos el estilo de las superficies de las otras páginas */
+.page-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-fill: #333333;
+}
+
+.muted {
+    -fx-font-size: 14px;
+    -fx-fill: #666666;
+}
+
+/* Estilo para las tarjetas de cada categoría que crearemos */
+/* Estilo para las tarjetas de categoría (Clonando el tamaño de libros) */
+.category-card {
+    -fx-background-color: white;
+    -fx-background-radius: 16; /* Igual que en el layout general */
+    -fx-border-radius: 16;
+    -fx-border-color: rgba(0,0,0,0.08);
+    -fx-padding: 12;
+    -fx-spacing: 10;
+
+    /* Medidas exactas del book-card */
+    -fx-min-width: 240;
+    -fx-pref-width: 240;
+    -fx-max-width: 240;
+    -fx-min-height: 380; /* Aproximado para que iguale la altura de la portada+texto */
+
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 16, 0.18, 0, 4);
+    -fx-alignment: center; /* Nombre centrado */
+}
+
+.category-card:hover {
+    -fx-background-color: #fcfcfc;
+    -fx-border-color: rgba(128, 36, 52, 0.3); /* Un toque del granate al pasar el ratón */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0.2, 0, 6);
+}
+
+.category-name {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #802434; /* El granate corporativo */
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+}
