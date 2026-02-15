@@ -141,7 +141,7 @@ public class BookCardController {
         placeholder = coverImageView.getImage();
 
         // click on image navigates; consume to avoid bubbling/double fire
-        coverImageView.setOnMouseClicked(e -> {
+        root.setOnMouseClicked(e -> {
             e.consume();
             onClick.run();
         });
