@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           stylesheets="@help.css"
+           styleClass="page-root">
+
+    <VBox spacing="14" styleClass="page-container" maxWidth="1180">
+        <padding>
+            <Insets top="16" right="16" bottom="16" left="16"/>
+        </padding>
+
+        <VBox spacing="12" styleClass="page-header">
+            <VBox spacing="2">
+                <Label text="Ayuda" styleClass="page-title"/>
+                <Label text="Manual de usuario y preguntas frecuentes de Mandrágora." styleClass="muted"/>
+            </VBox>
+        </VBox>
+
+        <VBox spacing="20" styleClass="page-body" VBox.vgrow="ALWAYS">
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="help-scroll-pane">
+                <Accordion fx:id="helpAccordion">
+                    <panes>
+                        <TitledPane text="¿Cómo añadir un nuevo libro al catálogo?">
+                            <Label wrapText="true" text="Ve a la sección 'Libros' y pulsa el botón granate con el icono '+' en la parte superior derecha. Rellena el formulario y guarda los cambios." />
+                        </TitledPane>
+                        <TitledPane text="¿Cómo puedo filtrar los libros por género?">
+                            <Label wrapText="true" text="Puedes usar el desplegable 'Categoría' en la lista de libros o ir directamente a la sección 'Categorías' y pulsar en la tarjeta del género deseado." />
+                        </TitledPane>
+                        <TitledPane text="¿Es posible editar la información de un autor?">
+                            <Label wrapText="true" text="Sí, en la sección 'Autores', selecciona el autor que desees modificar y pulsa el botón de edición para actualizar sus datos." />
+                        </TitledPane>
+                        <TitledPane text="¿Qué significan los estados de los libros?">
+                            <Label wrapText="true" text="Los estados indican la disponibilidad: 'Disponible', 'Prestado', 'En Reserva' o 'Descatalogado'." />
+                        </TitledPane>
+                        <TitledPane text="¿Cómo funciona la búsqueda de libros?">
+                            <Label wrapText="true" text="En la sección de Libros, puedes escribir el título, autor o ISBN en la barra de búsqueda. Los resultados se filtrarán automáticamente mientras escribes." />
+                        </TitledPane>
+
+                        <TitledPane text="¿Puedo ver los libros de un género específico?">
+                            <Label wrapText="true" text="¡Sí! Puedes ir a la sección 'Categorías' y pulsar en cualquier tarjeta, o usar el desplegable de filtros en la lista principal de libros." />
+                        </TitledPane>
+
+                        <TitledPane text="¿Cómo añado un nuevo autor a la base de datos?">
+                            <Label wrapText="true" text="Entra en la sección 'Autores' desde el menú lateral y utiliza el botón de creación para registrar un nuevo escritor en el sistema." />
+                        </TitledPane>
+
+                        <TitledPane text="¿Qué significan los colores de los estados de los libros?">
+                            <Label wrapText="true" text="Cada libro muestra una etiqueta: 'Sin Stock' (naranja) o 'Descatalogado' (rojo) para ayudarte a identificar su disponibilidad rápidamente." />
+                        </TitledPane>
+
+                        <TitledPane text="¿Cómo puedo ver los detalles completos de un libro?">
+                            <Label wrapText="true" text="Simplemente haz clic sobre la tarjeta del libro que te interese en la lista principal para abrir su ficha técnica detallada." />
+                        </TitledPane>
+
+                        <TitledPane text="¿Puedo filtrar libros por su estado de stock?">
+                            <Label wrapText="true" text="Sí, en la parte superior de la lista de libros tienes un selector llamado 'Estado' que te permite ver solo los libros disponibles o agotados." />
+                        </TitledPane>
+
+                        <TitledPane text="¿Cómo se ordena la lista de libros por defecto?">
+                            <Label wrapText="true" text="Por defecto, los libros aparecen ordenados por la fecha en la que fueron añadidos (los más recientes primero), pero puedes cambiarlo en el filtro 'Ordenar por'." />
+                        </TitledPane>
+
+                        <TitledPane text="¿Qué pasa si borro los filtros de búsqueda?">
+                            <Label wrapText="true" text="Al pulsar el botón 'Borrar filtros', la lista se reseteará y volverás a ver todos los libros del catálogo en su orden original." />
+                        </TitledPane>
+
+                        <TitledPane text="¿La aplicación guarda los cambios automáticamente?">
+                            <Label wrapText="true" text="Al crear o editar libros y autores, debes pulsar el botón de 'Guardar' para que los datos se sincronicen con nuestra base de datos en la nube." />
+                        </TitledPane>
+
+                        <TitledPane text="¿Cómo sé qué usuario está conectado actualmente?">
+                            <Label wrapText="true" text="En la parte superior de la barra lateral izquierda aparece tu nombre y correo electrónico de usuario de Mandrágora." />
+                        </TitledPane>
+
+                        <TitledPane text="¿Cómo puedo navegar entre las páginas del catálogo?">
+                            <Label wrapText="true" text="Si hay muchos libros, aparecerá un selector de páginas (1, 2, 3...) en la parte inferior para que puedas explorar todo el inventario." />
+                        </TitledPane>
+
+                        <TitledPane text="¿Qué es Mandrágora Backoffice?">
+                            <Label wrapText="true" text="Es una herramienta integral diseñada para facilitar la gestión interna de bibliotecas, permitiendo el control total sobre libros, autores y categorías." />
+                        </TitledPane>
+
+                        <TitledPane text="¿Qué hago si no encuentro un libro en la búsqueda?">
+                            <Label wrapText="true" text="Asegúrate de no tener filtros activos (puedes pulsar 'Borrar filtros') o prueba a buscar solo por una palabra clave del título." />
+                        </TitledPane>
+                        <TitledPane text="¿Cómo cerrar la sesión de forma segura?">
+                            <Label wrapText="true" text="Al final de la barra lateral izquierda, encontrarás el botón 'Cerrar sesión' para salir de tu cuenta." />
+                        </TitledPane>
+                        <TitledPane text="¿Puedo añadir imágenes a los libros?">
+                            <Label wrapText="true" text="Sí, al crear o editar un libro puedes subir una imagen de portada. Si no subes ninguna, aparecerá la imagen por defecto." />
+                        </TitledPane>
+
+                    </panes>
+                </Accordion>
+            </ScrollPane>
+        </VBox>
+    </VBox>
+</StackPane>

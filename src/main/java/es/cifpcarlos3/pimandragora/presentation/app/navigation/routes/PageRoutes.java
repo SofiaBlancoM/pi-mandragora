@@ -20,4 +20,6 @@ public final class PageRoutes {
 
     public static final String MY_PROFILE = PAGES_PATH + "myProfile/my-profile.fxml";
 
+    //Help
+    public static final String HELP = PAGES_PATH + "help/help.fxml";
 }

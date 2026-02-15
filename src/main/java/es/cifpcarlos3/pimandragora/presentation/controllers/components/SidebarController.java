@@ -89,7 +89,7 @@ public class SidebarController {
     public void goToHelp(ActionEvent e) {
         log.info("Navigate: Help");
         selectNav(helpButton);
-        // PageNavigator.goTo(PageRoutes.HELP);
+        PageNavigator.goTo(PageRoutes.HELP);
     }
 
     public void goToSettings(ActionEvent e) {

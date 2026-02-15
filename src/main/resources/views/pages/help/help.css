@@ -1,0 +1,41 @@
+
+.page-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+.muted {
+    -fx-font-size: 14px;
+    -fx-text-fill: #666666;
+}
+
+
+.help-section {
+    -fx-padding: 10;
+    -fx-border-color: rgba(0,0,0,0.05);
+    -fx-border-width: 0 0 1 0;
+}
+
+.help-question {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #802434;
+}
+
+.help-answer {
+    -fx-font-size: 14px;
+    -fx-text-fill: #444444;
+    -fx-line-spacing: 5;
+}
+
+
+.help-icon-brand {
+    -fx-icon-color: #802434;
+}
+
+.accordion .titled-pane > .content .label {
+    -fx-text-fill: #555555;
+    -fx-font-size: 14px;
+    -fx-padding: 5 0 5 0;
+}
