@@ -8,7 +8,10 @@ import es.cifpcarlos3.pimandragora.application.books.usecases.delete.DeleteBookU
 import es.cifpcarlos3.pimandragora.application.books.usecases.getbooks.GetBooksUseCase;
 import es.cifpcarlos3.pimandragora.application.books.usecases.getbyid.GetBookByIdUseCase;
 import es.cifpcarlos3.pimandragora.application.books.usecases.update.UpdateBookUseCase;
+import es.cifpcarlos3.pimandragora.application.categories.usecases.createcategory.CreateCategoryUseCase;
+import es.cifpcarlos3.pimandragora.application.categories.usecases.deletecategory.DeleteCategoryUseCase;
 import es.cifpcarlos3.pimandragora.application.categories.usecases.findallcategories.FindAllCategoriesUseCase;
+import es.cifpcarlos3.pimandragora.application.categories.usecases.findcategorybyid.FindCategoryByIdUseCase;
 import es.cifpcarlos3.pimandragora.application.common.images.CoverImageUrlResolver;
 import es.cifpcarlos3.pimandragora.application.userprofile.usecases.getcurrentuser.GetCurrentUserUseCase;
 import es.cifpcarlos3.pimandragora.infrastructure.auth.SupabaseAuthClient;
@@ -167,5 +170,19 @@ public final class AppContext {
     public SessionContext session() {
         if (session == null) throw new IllegalStateException("No active session (user not logged in)");
         return session;
+    }
+
+    public FindAllCategoriesUseCase getFindAllCategoriesUseCase() {
+        return findAllCategoriesUseCase;
+    }
+
+    public FindCategoryByIdUseCase getFindCategoryByIdUseCase() {
+        return new FindCategoryByIdUseCase(new SupabaseCategoryQueryRepository(postgrest));
+    }
+    public CreateCategoryUseCase getCreateCategoryUseCase() {
+        return new CreateCategoryUseCase(new SupabaseCategoryQueryRepository(postgrest));
+    }
+    public DeleteCategoryUseCase getDeleteCategoryUseCase() {
+        return new DeleteCategoryUseCase(new SupabaseCategoryQueryRepository(postgrest));
     }
 }

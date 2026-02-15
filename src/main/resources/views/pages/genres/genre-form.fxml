@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="es.cifpcarlos3.pimandragora.presentation.controllers.pages.GenreFormController"
+           stylesheets="@genres.css"
+           styleClass="page-root">
+
+    <VBox spacing="20" styleClass="page-container" maxWidth="600">
+        <padding>
+            <Insets top="40" right="40" bottom="40" left="40"/>
+        </padding>
+
+        <VBox spacing="5">
+            <Label fx:id="formTitle" text="Nueva Categoría" styleClass="page-title"/>
+            <Label text="Introduce el nombre del género literario." styleClass="muted"/>
+        </VBox>
+
+        <VBox spacing="10">
+            <Label text="Nombre de la categoría" styleClass="help-question" style="-fx-font-size: 14px;"/>
+            <TextField fx:id="nameField" prefHeight="40" promptText="Ej: Novela Histórica"/>
+        </VBox>
+
+        <HBox spacing="15" alignment="CENTER_RIGHT">
+            <Button fx:id="deleteButton" text="Eliminar" onAction="#handleDelete"
+                    style="-fx-background-color: #f4f4f4; -fx-text-fill: #d9534f; -fx-border-color: #d9534f; -fx-border-radius: 8; -fx-background-radius: 8; -fx-cursor: hand;"/>
+
+            <Region HBox.hgrow="ALWAYS" /> <Button text="Cancelar" onAction="#handleCancel"
+                                                   style="-fx-background-color: transparent; -fx-text-fill: #666666; -fx-cursor: hand;"/>
+
+            <Button text="Guardar" onAction="#handleSave"
+                    style="-fx-background-color: #802434; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-background-radius: 8; -fx-cursor: hand;"/>
+        </HBox>
+
+        <Separator />
+
+        <Button fx:id="viewBooksButton" text="Ver libros de esta categoría"
+                onAction="#handleViewBooks"
+                style="-fx-background-color: #f4f4f4; -fx-text-fill: #802434; -fx-border-color: #802434; -fx-border-radius: 8; -fx-background-radius: 8; -fx-cursor: hand;"
+                maxWidth="Infinity"/>
+    </VBox>
+</StackPane>

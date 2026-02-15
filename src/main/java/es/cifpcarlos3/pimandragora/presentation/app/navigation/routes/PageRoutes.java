@@ -16,6 +16,7 @@ public final class PageRoutes {
 
     //Genres
     public static final String GENRES = PAGES_PATH + "genres/genres.fxml";
+    public static final String GENRE_FORM = PAGES_PATH + "genres/genre-form.fxml";
 
 
     public static final String MY_PROFILE = PAGES_PATH + "myProfile/my-profile.fxml";

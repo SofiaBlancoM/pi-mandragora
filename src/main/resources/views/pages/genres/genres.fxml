@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <StackPane xmlns:fx="http://javafx.com/fxml"
            fx:controller="es.cifpcarlos3.pimandragora.presentation.controllers.pages.GenresController"
@@ -15,11 +16,21 @@
         </padding>
 
         <VBox spacing="12" styleClass="page-header">
-            <VBox spacing="2">
-                <Label text="Categorías" styleClass="page-title"/>
-                <Label text="Selecciona un género para ver sus libros disponibles."
-                       styleClass="muted"/>
-            </VBox>
+            <HBox alignment="CENTER_LEFT" spacing="20">
+                <VBox spacing="2">
+                    <Label text="Categorías" styleClass="page-title"/>
+                    <Label text="Selecciona un género para editarlo o ver sus libros."
+                           styleClass="muted"/>
+                </VBox>
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <Button text="Añadir Categoría" onAction="#goToCreateForm" styleClass="button-primary">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi2p-plus" iconSize="18" iconColor="white"/>
+                    </graphic>
+                </Button>
+            </HBox>
         </VBox>
 
         <VBox spacing="10" styleClass="page-body" VBox.vgrow="ALWAYS">

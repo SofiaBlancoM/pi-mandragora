@@ -5,8 +5,8 @@ import es.cifpcarlos3.pimandragora.application.categories.usecases.findallcatego
 import es.cifpcarlos3.pimandragora.presentation.app.di.AppContext;
 import es.cifpcarlos3.pimandragora.presentation.app.navigation.PageNavigator;
 import es.cifpcarlos3.pimandragora.presentation.app.navigation.routes.PageRoutes;
-import es.cifpcarlos3.pimandragora.presentation.books.controllers.pages.BookListController;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
@@ -23,6 +23,13 @@ public class GenresController {
     @FXML
     public void initialize() {
         loadCategories();
+    }
+
+
+    @FXML
+    private void goToCreateForm(ActionEvent event) {
+
+        PageNavigator.goTo(PageRoutes.GENRE_FORM);
     }
 
     private void loadCategories() {
@@ -53,8 +60,9 @@ public class GenresController {
 
             card.setOnMouseClicked(event -> {
                 PageNavigator.goTo(
-                        PageRoutes.BOOKS,
-                        (BookListController controller) -> controller.setInitialCategory(category.id())
+                        PageRoutes.GENRE_FORM,
+
+                        (GenreFormController controller) -> controller.setCategoryId(category.id())
                 );
             });
 
