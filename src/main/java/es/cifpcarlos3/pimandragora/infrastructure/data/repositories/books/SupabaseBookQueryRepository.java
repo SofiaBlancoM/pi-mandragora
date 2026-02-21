@@ -32,12 +32,12 @@ public record SupabaseBookQueryRepository(PostgrestApi postgrest) implements Boo
         Map<String, String> query = getQueryMap(request, select);
 
         log.debug(
-                "GET {} page={} size={} status={} text={} sort={} authorId={} categoryId={}",
+                "GET {} page={} size={} status={} searchText={} sort={} authorId={} categoryId={}",
                 TABLE,
                 request.page().page(),
                 request.page().size(),
                 request.status(),
-                request.text(),
+                request.searchText(),
                 request.sort(),
                 request.authorId(),
                 request.categoryId()
@@ -74,8 +74,8 @@ public record SupabaseBookQueryRepository(PostgrestApi postgrest) implements Boo
         if (q.minStock() != null) query.put("stock", "gte." + q.minStock());
         if (q.maxStock() != null) query.put("stock", "lte." + q.maxStock());
 
-        if (q.text() != null && !q.text().isBlank()) {
-            String t = q.text().trim();
+        if (q.searchText() != null && !q.searchText().isBlank()) {
+            String t = q.searchText().trim();
             query.put("or", "("
                     + "title.ilike.*" + t + "*,"
                     + "isbn.ilike.*" + t + "*,"
