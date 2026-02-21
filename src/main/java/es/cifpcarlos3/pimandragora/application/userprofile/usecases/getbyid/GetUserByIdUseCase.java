@@ -8,10 +8,6 @@ import java.util.UUID;
 
 public record GetUserByIdUseCase(UserProfileRepository repository) {
 
-    public GetUserByIdUseCase {
-        if (repository == null) throw new IllegalArgumentException("repository is required");
-    }
-
     public GetUserByIdResponse execute(UUID id) {
         if (id == null) throw new IllegalArgumentException("id is required");
 

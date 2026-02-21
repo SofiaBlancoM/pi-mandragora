@@ -10,12 +10,10 @@
 
     <Appenders>
 
-        <!-- Console: show EVERYTHING (DEBUG+) -->
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
 
-        <!-- File: only IMPORTANT logs (INFO+) -->
         <RollingFile
                 name="File"
                 fileName="${LOG_DIR}/app.log"
@@ -23,7 +21,6 @@
 
             <PatternLayout pattern="${LOG_PATTERN}"/>
 
-            <!-- This is the key: file only logs INFO/WARN/ERROR -->
             <Filters>
                 <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
             </Filters>
@@ -39,10 +36,8 @@
 
     <Loggers>
 
-        <!-- Your infra can be verbose (still only goes to file if INFO+) -->
         <Logger name="es.cifpcarlos3.pimandragora.infrastructure" level="DEBUG"/>
 
-        <!-- Root: allows DEBUG, sends to both appenders -->
         <Root level="DEBUG">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="File"/>

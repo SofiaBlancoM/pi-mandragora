@@ -5,11 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+/**
+ * Configuración del json mapper genérica
+ */
 public final class JsonMapper {
 
     private static final ObjectMapper MAPPER = create();
 
-    private JsonMapper() {
+    public static ObjectMapper get() {
+        return MAPPER;
     }
 
     private static ObjectMapper create() {
@@ -17,9 +21,5 @@ public final class JsonMapper {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.registerModule(new JavaTimeModule()).disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         return mapper;
-    }
-
-    public static ObjectMapper get() {
-        return MAPPER;
     }
 }

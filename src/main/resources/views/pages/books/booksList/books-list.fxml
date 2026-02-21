@@ -9,14 +9,12 @@
            stylesheets="@books-list.css"
            styleClass="page-root">
 
-    <!-- This is the centered "content column" -->
     <VBox spacing="14" styleClass="page-container" maxWidth="1180">
 
         <padding>
             <Insets top="16" right="16" bottom="16" left="16"/>
         </padding>
 
-        <!-- Header surface -->
         <VBox spacing="12" styleClass="page-header">
 
             <HBox alignment="CENTER_LEFT" spacing="12">
@@ -38,11 +36,10 @@
 
             <HBox alignment="BOTTOM_LEFT" spacing="12" styleClass="filters-bar">
 
-                <!-- Make the WHOLE VBox grow, not only the TextField -->
                 <VBox spacing="4" HBox.hgrow="ALWAYS">
                     <Label text="Búsqueda" styleClass="filter-label"/>
                     <TextField fx:id="searchField"
-                               promptText="Buscar por título, ISBN, editorial…"
+                               promptText="Buscar por título, ISBN o editorial"
                                styleClass="search-field"/>
                 </VBox>
 
@@ -64,7 +61,6 @@
             </HBox>
         </VBox>
 
-        <!-- Body surface -->
         <VBox spacing="10" styleClass="page-body" VBox.vgrow="ALWAYS">
 
             <Pagination fx:id="pagination"

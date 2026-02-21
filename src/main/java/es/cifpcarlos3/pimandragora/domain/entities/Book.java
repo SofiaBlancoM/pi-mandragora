@@ -18,7 +18,6 @@ public class Book extends Entity {
     private String isbn;
     private String title;
 
-    // References to other entities (Author, Category)
     private UUID authorId;
     private UUID categoryId;
 
@@ -30,8 +29,7 @@ public class Book extends Entity {
 
     private BookStatus status;
 
-    // --- Cover image (Supabase Storage) ---
-    private String coverImagePath;          // e.g. books/<bookId>/cover.jpg
+    private String coverImagePath;
     private Instant coverImageUpdatedAt;
 
     @Builder
@@ -63,72 +61,69 @@ public class Book extends Entity {
 
         setPrice(price);
         setStock(stock);
-
-        this.status = (status == null) ? BookStatus.ACTIVE : status;
+        setStatus(status);
 
         this.coverImagePath = coverImagePath;
         this.coverImageUpdatedAt = coverImageUpdatedAt;
     }
 
-    // ------------------------
-    // Domain behavior
-    // ------------------------
-
-    private void setIsbn(String isbn) {
-        if (isbn == null || isbn.isBlank()) throw new IllegalArgumentException("ISBN is required");
+    public void setIsbn(String isbn) {
+        if (isbn == null || isbn.isBlank()) throw new IllegalArgumentException("La ISBN es necesaria");
         this.isbn = isbn.trim();
     }
 
-    private void setTitle(String title) {
-        if (title == null || title.isBlank()) throw new IllegalArgumentException("Title is required");
+    public void setTitle(String title) {
+        if (title == null || title.isBlank()) throw new IllegalArgumentException("El título es necessario");
         this.title = title.trim();
     }
 
-    private void setAuthorId(UUID authorId) {
-        if (authorId == null) throw new IllegalArgumentException("AuthorId is required");
+    public void setAuthorId(UUID authorId) {
+        if (authorId == null) throw new IllegalArgumentException("El autor es necesario");
         this.authorId = authorId;
     }
 
-    private void setCategoryId(UUID categoryId) {
-        if (categoryId == null) throw new IllegalArgumentException("CategoryId is required");
+    public void setCategoryId(UUID categoryId) {
+        if (categoryId == null) throw new IllegalArgumentException("La categoría es necesaria");
         this.categoryId = categoryId;
     }
 
-    private void setPrice(BigDecimal price) {
-        if (price == null) throw new IllegalArgumentException("Price is required");
-        if (price.signum() < 0) throw new IllegalArgumentException("Price cannot be negative");
+    public void setPrice(BigDecimal price) {
+        if (price == null) throw new IllegalArgumentException("El precio es obligatorio");
+        if (price.signum() < 0) throw new IllegalArgumentException("El precio no puede ser negativo");
         this.price = price;
     }
 
-    private void setStock(int stock) {
-        if (stock < 0) throw new IllegalArgumentException("Stock cannot be negative");
-        this.stock = stock;
-    }
-
-    public void activate() {
-        this.status = BookStatus.ACTIVE;
-        touch();
-    }
-    // ------------------------
-    // Validation helpers
-    // ------------------------
-
-    public void adjustStock(int newStock) {
-        setStock(newStock);
+    public void setStock(int stock) {
+        if (stock < 0) throw new IllegalArgumentException("El stock no puede ser negativo");
         if (this.stock == 0 && this.status == BookStatus.ACTIVE) {
             this.status = BookStatus.OUT_OF_STOCK;
         }
+        this.stock = stock;
+    }
+
+    public void setStatus(BookStatus newBookStatus) {
+
+        if (newBookStatus == null) {
+            throw new IllegalArgumentException("El estado del libro es obligatorio");
+        }
+        switch (newBookStatus) {
+            case ACTIVE -> {
+                if (getStock() == 0) {
+                    throw new IllegalArgumentException("El estado no puede ser " + BookStatus.ACTIVE.getDisplayName() + " si el stock es cero");
+                }
+            }
+            case OUT_OF_STOCK -> {
+                if (getStock() > 0) {
+                    throw new IllegalArgumentException("El estado no puede ser " + BookStatus.OUT_OF_STOCK.getDisplayName() + " si el stock es mayor que cero");
+                }
+            }
+        }
+        this.status = newBookStatus;
         touch();
     }
 
-    public void changePrice(BigDecimal newPrice) {
-        setPrice(newPrice);
-        touch();
-    }
-
-    public void discontinue() {
-        this.status = BookStatus.DISCONTINUED;
-        touch();
+    private void touch() {
+        this.updatedAt = Instant.now();
     }
 
     public void removeCoverImage() {
@@ -137,21 +132,18 @@ public class Book extends Entity {
         touch();
     }
 
-    public void rename(String newTitle) {
-        setTitle(newTitle);
-        touch();
+    public void setPublicationDate(LocalDate publicationDate) {
+        if (publicationDate == null) throw new IllegalArgumentException("La fecha de publicación es necessaria");
+        this.publicationDate = publicationDate;
     }
 
-    private void touch() {
-        this.updatedAt = Instant.now();
+    public void setPublisher(String publisher) {
+        this.publisher = publisher.trim();
     }
 
-    /**
-     * Call this AFTER uploading a new cover image to Supabase Storage.
-     */
     public void updateCoverImage(String newPath) {
         if (newPath == null || newPath.isBlank()) {
-            throw new IllegalArgumentException("Cover image path is required");
+            throw new IllegalArgumentException("La ruta de la imagen de portada es obligatoria");
         }
         this.coverImagePath = newPath;
         this.coverImageUpdatedAt = Instant.now();

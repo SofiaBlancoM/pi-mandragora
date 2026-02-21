@@ -3,7 +3,7 @@ package es.cifpcarlos3.pimandragora.presentation.books.viewmodels;
 import es.cifpcarlos3.pimandragora.application.books.usecases.getbooks.GetBooksUseCase;
 import es.cifpcarlos3.pimandragora.application.books.usecases.getbooks.dtos.GetBooksListItemResponse;
 import es.cifpcarlos3.pimandragora.application.books.usecases.getbooks.dtos.GetBooksQuery;
-import es.cifpcarlos3.pimandragora.application.common.images.CoverImageUrlResolver;
+import es.cifpcarlos3.pimandragora.application.common.images.CoverImageUrlGenerator;
 import es.cifpcarlos3.pimandragora.domain.enums.BookStatus;
 import es.cifpcarlos3.pimandragora.shared.paging.Page;
 import es.cifpcarlos3.pimandragora.shared.paging.PageRequest;
@@ -18,7 +18,7 @@ import java.util.UUID;
 public class BooksViewModel {
 
     private final GetBooksUseCase getBooksUseCase;
-    private final CoverImageUrlResolver coverResolver;
+    private final CoverImageUrlGenerator coverResolver;
     private final int pageSize;
 
     // Filters
@@ -37,7 +37,7 @@ public class BooksViewModel {
     private final ObjectProperty<GetBooksQuery.Sort> sort =
             new SimpleObjectProperty<>(GetBooksQuery.Sort.CREATED_AT_DESC);
 
-    public BooksViewModel(GetBooksUseCase getBooksUseCase, CoverImageUrlResolver coverResolver, int pageSize) {
+    public BooksViewModel(GetBooksUseCase getBooksUseCase, CoverImageUrlGenerator coverResolver, int pageSize) {
         this.getBooksUseCase = getBooksUseCase;
         this.coverResolver = coverResolver;
         this.pageSize = pageSize;
@@ -107,7 +107,7 @@ public class BooksViewModel {
 
     private BookCardListViewModel toCardVm(GetBooksListItemResponse dto) {
         int year = dto.publicationDate() != null ? dto.publicationDate().getYear() : 0;
-        String coverUrl = coverResolver.resolve(dto.coverImagePath());
+        String coverUrl = coverResolver.generate(dto.coverImagePath());
 
         return new BookCardListViewModel(
                 dto.id(),

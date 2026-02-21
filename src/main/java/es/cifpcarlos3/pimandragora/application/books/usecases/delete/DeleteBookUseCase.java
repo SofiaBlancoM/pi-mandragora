@@ -6,12 +6,13 @@ import es.cifpcarlos3.pimandragora.domain.entities.Book;
 
 import java.util.UUID;
 
+/**
+ * Caso de uso para borrar un libro y su imagen de portada
+ *
+ * @param bookRepository
+ * @param coverStorage
+ */
 public record DeleteBookUseCase(BookRepository bookRepository, BookCoverImageStorage coverStorage) {
-
-    public DeleteBookUseCase {
-        if (bookRepository == null) throw new IllegalArgumentException("bookRepository is required");
-        if (coverStorage == null) throw new IllegalArgumentException("coverStorage is required");
-    }
 
     public void execute(UUID bookId) {
         if (bookId == null) throw new IllegalArgumentException("bookId is required");
@@ -26,8 +27,6 @@ public record DeleteBookUseCase(BookRepository bookRepository, BookCoverImageSto
     private void deleteCoverIfExists(Book book) {
         String coverPath = book.getCoverImagePath();
         if (coverPath == null || coverPath.isBlank()) return;
-
-        // If storage deletion fails, we fail fast to avoid DB deletion leaving inconsistent UI expectations.
         coverStorage.deleteCover(coverPath);
     }
 

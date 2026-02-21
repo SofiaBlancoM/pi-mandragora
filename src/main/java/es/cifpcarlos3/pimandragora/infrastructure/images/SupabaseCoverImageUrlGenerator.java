@@ -1,20 +1,22 @@
 package es.cifpcarlos3.pimandragora.infrastructure.images;
 
-import es.cifpcarlos3.pimandragora.application.common.images.CoverImageUrlResolver;
+import es.cifpcarlos3.pimandragora.application.common.images.CoverImageUrlGenerator;
 import es.cifpcarlos3.pimandragora.infrastructure.data.supabase.StorageApi;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SupabaseCoverImageUrlResolver implements CoverImageUrlResolver {
+/**
+ * Genera las urls para acceder a las imágenes
+ */
+public class SupabaseCoverImageUrlGenerator implements CoverImageUrlGenerator {
 
     private final StorageApi storageApi;
     private final int expiresInSeconds;
 
-    // Optional: cache to avoid calling sign endpoint repeatedly
     private final Map<String, String> cache = new ConcurrentHashMap<>();
 
-    public SupabaseCoverImageUrlResolver(StorageApi storageApi, int expiresInSeconds) {
+    public SupabaseCoverImageUrlGenerator(StorageApi storageApi, int expiresInSeconds) {
         this.storageApi = storageApi;
         this.expiresInSeconds = expiresInSeconds;
     }
@@ -25,7 +27,7 @@ public class SupabaseCoverImageUrlResolver implements CoverImageUrlResolver {
     }
 
     @Override
-    public String resolve(String objectPath) {
+    public String generate(String objectPath) {
         if (objectPath == null || objectPath.isBlank()) return null;
 
         return cache.computeIfAbsent(objectPath, p ->

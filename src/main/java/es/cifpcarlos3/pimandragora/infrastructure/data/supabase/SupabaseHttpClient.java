@@ -10,6 +10,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+/**
+ * Clase base para hacer las llamadas http a supabase
+ */
 public class SupabaseHttpClient {
 
     private static final Logger log =
@@ -30,12 +33,8 @@ public class SupabaseHttpClient {
                 .header("Authorization", "Bearer " + bearer);
     }
 
-    public HttpClient client() {
-        return httpClient;
-    }
-
-    public HttpResponse<byte[]> sendBytes(HttpRequest request) {
-        return send(request, HttpResponse.BodyHandlers.ofByteArray());
+    public HttpResponse<String> sendJson(HttpRequest request) {
+        return send(request, HttpResponse.BodyHandlers.ofString());
     }
 
     public <T> HttpResponse<T> send(HttpRequest request, HttpResponse.BodyHandler<T> handler) {
@@ -65,7 +64,7 @@ public class SupabaseHttpClient {
                     request.uri(),
                     e
             );
-            throw new RuntimeException("HTTP request failed: " + request.uri(), e);
+            throw new RuntimeException("La HTTP request falló: " + request.uri(), e);
         }
     }
 
@@ -85,9 +84,5 @@ public class SupabaseHttpClient {
                     "Request failed: " + response.statusCode() + " - " + body
             );
         }
-    }
-
-    public HttpResponse<String> sendJson(HttpRequest request) {
-        return send(request, HttpResponse.BodyHandlers.ofString());
     }
 }

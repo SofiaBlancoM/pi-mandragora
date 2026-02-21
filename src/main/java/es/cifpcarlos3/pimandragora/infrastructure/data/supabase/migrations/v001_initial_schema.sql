@@ -1,20 +1,13 @@
 begin;
 
--- =========================
--- 0) CLEAN PREVIOUS SETUP
--- =========================
 drop table if exists public.books cascade;
 drop table if exists public.authors cascade;
 drop table if exists public.categories cascade;
 
 drop function if exists public.set_updated_at() cascade;
 
--- Ensure UUID generation exists (Supabase usually has this already)
 create extension if not exists "pgcrypto";
 
--- =========================
--- 1) UPDATED_AT TRIGGER FN
--- =========================
 create or replace function public.set_updated_at()
 returns trigger
 language plpgsql
@@ -25,9 +18,6 @@ begin
 end;
 $$;
 
--- =========================
--- 2) AUTHORS
--- =========================
 create table public.authors (
   id uuid primary key default gen_random_uuid(),
   full_name text not null,
@@ -41,7 +31,6 @@ create trigger tr_authors_set_updated_at
 before update on public.authors
 for each row execute function public.set_updated_at();
 
--- Seed authors
 insert into public.authors (full_name) values
   ('George Orwell'),
   ('Jane Austen'),
@@ -49,9 +38,6 @@ insert into public.authors (full_name) values
   ('Ursula K. Le Guin'),
   ('Fyodor Dostoevsky');
 
--- =========================
--- 3) CATEGORIES
--- =========================
 create table public.categories (
   id uuid primary key default gen_random_uuid(),
   name text not null,
@@ -66,7 +52,6 @@ create trigger tr_categories_set_updated_at
 before update on public.categories
 for each row execute function public.set_updated_at();
 
--- Seed categories
 insert into public.categories (name, description) values
   ('Dystopian', 'Dystopian and political fiction'),
   ('Classic', 'Classic literature'),
@@ -75,9 +60,6 @@ insert into public.categories (name, description) values
   ('Philosophy', 'Philosophical and psychological works'),
   ('Satire', 'Satirical works');
 
--- =========================
--- 4) BOOKS (WITH IMAGE FIELDS)
--- =========================
 create table public.books (
   id uuid primary key default gen_random_uuid(),
 
@@ -96,9 +78,8 @@ create table public.books (
   status text not null default 'ACTIVE'
     check (status in ('ACTIVE', 'OUT_OF_STOCK', 'DISCONTINUED')),
 
-  -- New fields for Supabase Storage integration
-  cover_image_path text null,                 -- e.g. books/<bookId>/cover.jpg
-  cover_image_updated_at timestamptz null,    -- for cache-busting/refresh
+  cover_image_path text null,
+  cover_image_updated_at timestamptz null,
 
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
@@ -113,8 +94,6 @@ create trigger tr_books_set_updated_at
 before update on public.books
 for each row execute function public.set_updated_at();
 
--- Seed books
--- We reference author/category by name to keep the seed readable.
 insert into public.books (
   isbn, title, author_id, category_id, publisher, publication_date, price, stock, status,
   cover_image_path, cover_image_updated_at

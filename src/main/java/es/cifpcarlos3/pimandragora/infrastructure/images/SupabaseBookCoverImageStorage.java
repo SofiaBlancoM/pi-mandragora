@@ -6,12 +6,7 @@ import es.cifpcarlos3.pimandragora.infrastructure.data.supabase.StorageApi;
 import java.nio.file.Path;
 import java.util.UUID;
 
-
 public record SupabaseBookCoverImageStorage(StorageApi storageApi) implements BookCoverImageStorage {
-
-    public SupabaseBookCoverImageStorage {
-        if (storageApi == null) throw new IllegalArgumentException("storageApi is required");
-    }
 
     @Override
     public void deleteCover(String objectPath) {
@@ -20,10 +15,9 @@ public record SupabaseBookCoverImageStorage(StorageApi storageApi) implements Bo
 
     @Override
     public String uploadBookCover(UUID bookId, Path file) {
-        if (bookId == null) throw new IllegalArgumentException("bookId is required");
-        if (file == null) throw new IllegalArgumentException("file is required");
+        if (bookId == null) throw new IllegalArgumentException("El id del libro es necesario");
+        if (file == null) throw new IllegalArgumentException("La ruta del fichero es necesaria");
 
-        // Path inside the bucket only
         String objectPath = "books/" + bookId + "/cover.jpg";
 
         storageApi.uploadImage(file, objectPath);

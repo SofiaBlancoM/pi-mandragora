@@ -66,6 +66,13 @@ public class BookListController {
     @FXML
     private Label resultsLabel;
 
+    public void setInitialCategory(UUID categoryId) {
+        categoryFilter.getItems().stream()
+                .filter(cat -> cat.id().equals(categoryId))
+                .findFirst()
+                .ifPresent(categoryFilter.getSelectionModel()::select);
+    }
+
     @FXML
     private void initialize() {
         log.debug("BookListController initialized");
@@ -190,7 +197,7 @@ public class BookListController {
         // listeners
         searchField.textProperty().addListener((obs, o, n) -> {
             if (suppressFilterEvents) return;
-            log.debug("Filter changed: text={}", n);
+            log.debug("Filter changed: searchText={}", n);
             booksViewModel.searchTextProperty().set(n);
             goToFirstPageAndReload();
         });
@@ -312,12 +319,5 @@ public class BookListController {
                 suppressFilterEvents = false;
             }
         });
-    }
-
-    public void setInitialCategory(UUID categoryId) {
-        categoryFilter.getItems().stream()
-                .filter(cat -> cat.id().equals(categoryId))
-                .findFirst()
-                .ifPresent(categoryFilter.getSelectionModel()::select);
     }
 }

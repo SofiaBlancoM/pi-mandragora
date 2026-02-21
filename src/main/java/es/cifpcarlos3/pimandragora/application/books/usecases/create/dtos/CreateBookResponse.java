@@ -23,21 +23,21 @@ public record CreateBookResponse(
         Instant createdAt,
         Instant updatedAt
 ) {
-    public static CreateBookResponse from(Book b) {
+    public static CreateBookResponse from(Book book) {
         return new CreateBookResponse(
-                b.getId(),
-                b.getIsbn(),
-                b.getTitle(),
-                b.getAuthorId(),
-                b.getCategoryId(),
-                b.getPublisher(),
-                b.getPublicationDate(),
-                b.getPrice(),
-                b.getStock(),
-                b.getStatus(),
-                b.getCoverImagePath(),
-                b.getCreatedAt(),
-                b.getUpdatedAt()
+                book.getId(),
+                book.getIsbn(),
+                book.getTitle(),
+                book.getAuthorId(),
+                book.getCategoryId(),
+                book.getPublisher(),
+                book.getPublicationDate(),
+                book.getPrice(),
+                book.getStock(),
+                book.getStatus(),
+                book.getCoverImagePath(),
+                book.getCreatedAt(),
+                book.getUpdatedAt()
         );
     }
 }

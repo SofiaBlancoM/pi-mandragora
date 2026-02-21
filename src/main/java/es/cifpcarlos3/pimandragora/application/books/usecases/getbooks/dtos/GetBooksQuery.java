@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public record GetBooksQuery(
-        String text,
+        String searchText,
         UUID authorId,
         UUID categoryId,
         BookStatus status,
@@ -18,15 +18,10 @@ public record GetBooksQuery(
         Sort sort,
         PageRequest page
 ) {
-    private static String normalizeText(String t) {
-        if (t == null) return null;
-        String x = t.trim();
-        return x.isBlank() ? null : x;
-    }
 
     public GetBooksQuery normalized() {
         return new GetBooksQuery(
-                normalizeText(text),
+                searchText,
                 authorId,
                 categoryId,
                 status,
