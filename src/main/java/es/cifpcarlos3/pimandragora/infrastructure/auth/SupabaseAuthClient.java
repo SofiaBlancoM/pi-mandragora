@@ -79,7 +79,7 @@ public class SupabaseAuthClient implements AuthClient {
             HttpResponse<String> response = supabaseHttpClient.sendJson(request);
 
         } catch (Exception ex) {
-            throw new RuntimeException("Failed to logout from Supabase", ex);
+            throw new RuntimeException("Fallo en hacer el logout", ex);
         } finally {
             SupabaseSession.clear();
         }

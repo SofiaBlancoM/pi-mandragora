@@ -138,7 +138,6 @@ public class Book extends Entity {
     }
 
     public void setPublisher(String publisher) {
-        if (publisher == null || publisher.isBlank()) throw new IllegalArgumentException("La editorial es necessaria");
         this.publisher = publisher.trim();
     }
 

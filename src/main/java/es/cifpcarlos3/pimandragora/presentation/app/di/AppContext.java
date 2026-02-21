@@ -20,7 +20,7 @@ import es.cifpcarlos3.pimandragora.infrastructure.data.repositories.books.Supaba
 import es.cifpcarlos3.pimandragora.infrastructure.data.repositories.books.SupabaseBookRepository;
 import es.cifpcarlos3.pimandragora.infrastructure.data.repositories.categories.SupabaseCategoryQueryRepository;
 import es.cifpcarlos3.pimandragora.infrastructure.data.repositories.users.SupabaseUserProfileRepository;
-import es.cifpcarlos3.pimandragora.infrastructure.data.supabase.PostgrestApi;
+import es.cifpcarlos3.pimandragora.infrastructure.data.supabase.PostgreClient;
 import es.cifpcarlos3.pimandragora.infrastructure.data.supabase.StorageApi;
 import es.cifpcarlos3.pimandragora.infrastructure.data.supabase.SupabaseHttpClient;
 import es.cifpcarlos3.pimandragora.infrastructure.data.supabase.SupabaseSession;
@@ -44,7 +44,7 @@ public final class AppContext {
     @Getter(AccessLevel.NONE)
     private final SupabaseHttpClient supabase;
     @Getter(AccessLevel.NONE)
-    private final PostgrestApi postgrest;
+    private final PostgreClient postgrest;
     @Getter(AccessLevel.NONE)
     private final StorageApi storageApi;
     // -------------------------------------------------------------------------
@@ -85,7 +85,7 @@ public final class AppContext {
     // -------------------------------------------------------------------------
     private AppContext() {
         this.supabase = new SupabaseHttpClient();
-        this.postgrest = new PostgrestApi(supabase);
+        this.postgrest = new PostgreClient(supabase);
         this.storageApi = new StorageApi(supabase);
 
         // Repositories are local (no need to expose as fields)

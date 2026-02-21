@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import es.cifpcarlos3.pimandragora.application.books.repositories.BookQueryRepository;
 import es.cifpcarlos3.pimandragora.application.books.usecases.getbooks.dtos.GetBooksListItemResponse;
 import es.cifpcarlos3.pimandragora.application.books.usecases.getbooks.dtos.GetBooksQuery;
-import es.cifpcarlos3.pimandragora.infrastructure.data.supabase.PostgrestApi;
+import es.cifpcarlos3.pimandragora.infrastructure.data.supabase.PostgreClient;
 import es.cifpcarlos3.pimandragora.shared.paging.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public record SupabaseBookQueryRepository(PostgrestApi postgrest) implements BookQueryRepository {
+public record SupabaseBookQueryRepository(PostgreClient postgrest) implements BookQueryRepository {
 
     private static final Logger log =
             LoggerFactory.getLogger(SupabaseBookQueryRepository.class);
@@ -59,27 +59,27 @@ public record SupabaseBookQueryRepository(PostgrestApi postgrest) implements Boo
         );
     }
 
-    private static Map<String, String> getQueryMap(GetBooksQuery q, String select) {
+    private static Map<String, String> getQueryMap(GetBooksQuery request, String select) {
         Map<String, String> query = new HashMap<>();
         query.put("select", select);
-        query.put("order", orderBy(q.sort()));
+        query.put("order", orderBy(request.sort()));
 
-        if (q.authorId() != null) query.put("author_id", "eq." + q.authorId());
-        if (q.categoryId() != null) query.put("category_id", "eq." + q.categoryId());
-        if (q.status() != null) query.put("status", "eq." + q.status());
+        if (request.authorId() != null) query.put("author_id", "eq." + request.authorId());
+        if (request.categoryId() != null) query.put("category_id", "eq." + request.categoryId());
+        if (request.status() != null) query.put("status", "eq." + request.status());
 
-        if (q.minPrice() != null) query.put("price", "gte." + q.minPrice());
-        if (q.maxPrice() != null) query.put("price", "lte." + q.maxPrice());
+        if (request.minPrice() != null) query.put("price", "gte." + request.minPrice());
+        if (request.maxPrice() != null) query.put("price", "lte." + request.maxPrice());
 
-        if (q.minStock() != null) query.put("stock", "gte." + q.minStock());
-        if (q.maxStock() != null) query.put("stock", "lte." + q.maxStock());
+        if (request.minStock() != null) query.put("stock", "gte." + request.minStock());
+        if (request.maxStock() != null) query.put("stock", "lte." + request.maxStock());
 
-        if (q.searchText() != null && !q.searchText().isBlank()) {
-            String t = q.searchText().trim();
+        if (request.searchText() != null && !request.searchText().isBlank()) {
+            String searchText = request.searchText().trim();
             query.put("or", "("
-                    + "title.ilike.*" + t + "*,"
-                    + "isbn.ilike.*" + t + "*,"
-                    + "publisher.ilike.*" + t + "*"
+                    + "title.ilike.*" + searchText + "*,"
+                    + "isbn.ilike.*" + searchText + "*,"
+                    + "publisher.ilike.*" + searchText + "*"
                     + ")");
         }
 

@@ -10,6 +10,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+/**
+ * Clase base para hacer las llamadas http a supabase
+ */
 public class SupabaseHttpClient {
 
     private static final Logger log =

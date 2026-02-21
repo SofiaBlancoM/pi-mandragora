@@ -15,20 +15,20 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.StringJoiner;
 
-public class PostgrestApi {
+public class PostgreClient {
 
     private static final Logger log =
-            LoggerFactory.getLogger(PostgrestApi.class);
+            LoggerFactory.getLogger(PostgreClient.class);
 
     private final SupabaseHttpClient http;
     private final ObjectMapper mapper = JsonMapper.get();
     private final String schema;
 
-    public PostgrestApi(SupabaseHttpClient http) {
+    public PostgreClient(SupabaseHttpClient http) {
         this(http, "public");
     }
 
-    public PostgrestApi(SupabaseHttpClient http, String schema) {
+    public PostgreClient(SupabaseHttpClient http, String schema) {
         this.http = http;
         this.schema = schema;
     }
@@ -46,6 +46,15 @@ public class PostgrestApi {
         http.sendJson(request);
     }
 
+    private static String restPath(String table, Map<String, String> query) {
+        String base = "/rest/v1/" + table;
+        if (query == null || query.isEmpty()) return base;
+
+        StringJoiner stringJoiner = new StringJoiner("&");
+        query.forEach((key, value) -> stringJoiner.add(key + "=" + value));
+        return base + "?" + stringJoiner;
+    }
+
     public <T> java.util.List<T> getList(
             String table,
             Map<String, String> query,
@@ -61,13 +70,13 @@ public class PostgrestApi {
                 .GET()
                 .build();
 
-        HttpResponse<String> res = http.sendJson(request);
+        HttpResponse<String> response = http.sendJson(request);
 
         try {
-            return mapper.readValue(res.body(), type);
+            return mapper.readValue(response.body(), type);
         } catch (Exception e) {
             log.error("Failed to parse GET list response for {}", path, e);
-            throw new RuntimeException("Failed to parse PostgREST list response for " + table, e);
+            throw new RuntimeException("Fallo al parsear la respuesta para la tabla: " + table, e);
         }
     }
 
@@ -78,13 +87,15 @@ public class PostgrestApi {
             TypeReference<java.util.List<T>> listType
     ) {
         try {
-            Map<String, String> q = new HashMap<>();
-            if (query != null) q.putAll(query);
 
-            q.put("limit", String.valueOf(pageRequest.size()));
-            q.put("offset", String.valueOf(pageRequest.offset()));
+            if (query == null) {
+                query = new HashMap<>();
+            }
 
-            String path = restPath(table, q);
+            query.put("limit", String.valueOf(pageRequest.size()));
+            query.put("offset", String.valueOf(pageRequest.offset()));
+
+            String path = restPath(table, query);
 
             log.debug(
                     "HTTP GET {} page={} size={}",
@@ -110,18 +121,18 @@ public class PostgrestApi {
 
         } catch (Exception e) {
             log.error("Failed to fetch paged data from {}", table, e);
-            throw new RuntimeException("Failed to fetch paged data from " + table, e);
+            throw new RuntimeException("Fallo al obtener los datos de la tabla: " + table, e);
         }
     }
 
     private static Optional<Long> parseTotalFromContentRange(Optional<String> contentRange) {
         if (contentRange.isEmpty()) return Optional.empty();
 
-        String v = contentRange.get();
-        int slash = v.indexOf('/');
+        String totalValue = contentRange.get();
+        int slash = totalValue.indexOf('/');
         if (slash < 0) return Optional.empty();
 
-        String totalPart = v.substring(slash + 1).trim();
+        String totalPart = totalValue.substring(slash + 1).trim();
         if (totalPart.equals("*")) return Optional.empty();
 
         try {
@@ -161,17 +172,8 @@ public class PostgrestApi {
             return mapper.readValue(res.body(), type);
         } catch (Exception e) {
             log.error("Failed to parse GET single response for {}", path, e);
-            throw new RuntimeException("Failed to parse PostgREST response for " + table, e);
+            throw new RuntimeException("Fallo al parsear la respuesta para la tabla: " + table, e);
         }
-    }
-
-    private static String restPath(String table, Map<String, String> query) {
-        String base = "/rest/v1/" + table;
-        if (query == null || query.isEmpty()) return base;
-
-        StringJoiner sj = new StringJoiner("&");
-        query.forEach((k, v) -> sj.add(k + "=" + v));
-        return base + "?" + sj;
     }
 
     public <T> java.util.List<T> upsert(
@@ -200,7 +202,7 @@ public class PostgrestApi {
 
         } catch (Exception e) {
             log.error("Failed to upsert into {}", table, e);
-            throw new RuntimeException("Failed to upsert into " + table, e);
+            throw new RuntimeException("Fallo al insertar en la tabla: " + table, e);
         }
     }
 }

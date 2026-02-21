@@ -6,6 +6,9 @@ import es.cifpcarlos3.pimandragora.infrastructure.data.supabase.StorageApi;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Genera las urls para acceder a las imágenes
+ */
 public class SupabaseCoverImageUrlGenerator implements CoverImageUrlGenerator {
 
     private final StorageApi storageApi;

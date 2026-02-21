@@ -3,6 +3,9 @@ package es.cifpcarlos3.pimandragora.infrastructure.data.supabase;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Clase que guarda de manera estática el access token del usuario al loguearse
+ */
 public final class SupabaseSession {
 
     @Getter
@@ -12,11 +15,11 @@ public final class SupabaseSession {
     private SupabaseSession() {
     }
 
-    public static boolean hasToken() {
-        return accessToken != null && !accessToken.isBlank();
-    }
-
     public static void clear() {
         accessToken = null;
+    }
+
+    public static boolean hasToken() {
+        return accessToken != null && !accessToken.isBlank();
     }
 }
