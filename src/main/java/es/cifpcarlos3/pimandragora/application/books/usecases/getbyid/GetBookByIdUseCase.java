@@ -6,17 +6,18 @@ import es.cifpcarlos3.pimandragora.domain.entities.Book;
 
 import java.util.UUID;
 
+/**
+ * Caso de uso para obtener un libro por el id
+ *
+ * @param bookRepository
+ */
 public record GetBookByIdUseCase(BookRepository bookRepository) {
 
-    public GetBookByIdUseCase {
-        if (bookRepository == null) throw new IllegalArgumentException("repository is required");
-    }
-
     public GetBookByIdResponse execute(UUID id) {
-        if (id == null) throw new IllegalArgumentException("id is required");
+        if (id == null) throw new IllegalArgumentException("El id es obligatorio");
 
         Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Book not found: " + id));
+                .orElseThrow(() -> new IllegalArgumentException("Libro no encontrado con el id: " + id));
 
         return GetBookByIdResponse.from(book);
     }
