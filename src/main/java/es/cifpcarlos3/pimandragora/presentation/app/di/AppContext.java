@@ -12,7 +12,7 @@ import es.cifpcarlos3.pimandragora.application.categories.usecases.createcategor
 import es.cifpcarlos3.pimandragora.application.categories.usecases.deletecategory.DeleteCategoryUseCase;
 import es.cifpcarlos3.pimandragora.application.categories.usecases.findallcategories.FindAllCategoriesUseCase;
 import es.cifpcarlos3.pimandragora.application.categories.usecases.findcategorybyid.FindCategoryByIdUseCase;
-import es.cifpcarlos3.pimandragora.application.common.images.CoverImageUrlResolver;
+import es.cifpcarlos3.pimandragora.application.common.images.CoverImageUrlGenerator;
 import es.cifpcarlos3.pimandragora.application.userprofile.usecases.getcurrentuser.GetCurrentUserUseCase;
 import es.cifpcarlos3.pimandragora.infrastructure.auth.SupabaseAuthClient;
 import es.cifpcarlos3.pimandragora.infrastructure.data.repositories.authors.SupabaseAuthorQueryRepository;
@@ -25,7 +25,7 @@ import es.cifpcarlos3.pimandragora.infrastructure.data.supabase.StorageApi;
 import es.cifpcarlos3.pimandragora.infrastructure.data.supabase.SupabaseHttpClient;
 import es.cifpcarlos3.pimandragora.infrastructure.data.supabase.SupabaseSession;
 import es.cifpcarlos3.pimandragora.infrastructure.images.SupabaseBookCoverImageStorage;
-import es.cifpcarlos3.pimandragora.infrastructure.images.SupabaseCoverImageUrlResolver;
+import es.cifpcarlos3.pimandragora.infrastructure.images.SupabaseCoverImageUrlGenerator;
 import es.cifpcarlos3.pimandragora.presentation.app.config.AppConfig;
 import es.cifpcarlos3.pimandragora.presentation.app.config.PropertyKey;
 import es.cifpcarlos3.pimandragora.presentation.app.constants.ConfigConstants;
@@ -115,6 +115,18 @@ public final class AppContext {
         return INSTANCE;
     }
 
+    public CreateCategoryUseCase getCreateCategoryUseCase() {
+        return new CreateCategoryUseCase(new SupabaseCategoryQueryRepository(postgrest));
+    }
+
+    public DeleteCategoryUseCase getDeleteCategoryUseCase() {
+        return new DeleteCategoryUseCase(new SupabaseCategoryQueryRepository(postgrest));
+    }
+
+    public FindCategoryByIdUseCase getFindCategoryByIdUseCase() {
+        return new FindCategoryByIdUseCase(new SupabaseCategoryQueryRepository(postgrest));
+    }
+
     public static void init() {
         INSTANCE = new AppContext();
     }
@@ -130,7 +142,7 @@ public final class AppContext {
         AuthSessionDto s = authClient.login(email, password);
 
         AuthUserDto user = authClient.getCurrentUser();
-        CoverImageUrlResolver coverResolver = new SupabaseCoverImageUrlResolver(storageApi, this.signedUrlTimeinSeconds);
+        CoverImageUrlGenerator coverResolver = new SupabaseCoverImageUrlGenerator(storageApi, this.signedUrlTimeinSeconds);
 
         replaceSession(new SessionContext(user, coverResolver));
         return s;
@@ -170,19 +182,5 @@ public final class AppContext {
     public SessionContext session() {
         if (session == null) throw new IllegalStateException("No active session (user not logged in)");
         return session;
-    }
-
-    public FindAllCategoriesUseCase getFindAllCategoriesUseCase() {
-        return findAllCategoriesUseCase;
-    }
-
-    public FindCategoryByIdUseCase getFindCategoryByIdUseCase() {
-        return new FindCategoryByIdUseCase(new SupabaseCategoryQueryRepository(postgrest));
-    }
-    public CreateCategoryUseCase getCreateCategoryUseCase() {
-        return new CreateCategoryUseCase(new SupabaseCategoryQueryRepository(postgrest));
-    }
-    public DeleteCategoryUseCase getDeleteCategoryUseCase() {
-        return new DeleteCategoryUseCase(new SupabaseCategoryQueryRepository(postgrest));
     }
 }

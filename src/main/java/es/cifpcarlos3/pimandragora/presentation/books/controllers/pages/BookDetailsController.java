@@ -10,7 +10,7 @@ import es.cifpcarlos3.pimandragora.application.books.usecases.update.dtos.Update
 import es.cifpcarlos3.pimandragora.application.books.usecases.update.dtos.UpdateBookResponse;
 import es.cifpcarlos3.pimandragora.application.categories.usecases.findallcategories.FindAllCategoriesUseCase;
 import es.cifpcarlos3.pimandragora.application.categories.usecases.findallcategories.dtos.FindAllCategoriesResponse;
-import es.cifpcarlos3.pimandragora.application.common.images.CoverImageUrlResolver;
+import es.cifpcarlos3.pimandragora.application.common.images.CoverImageUrlGenerator;
 import es.cifpcarlos3.pimandragora.presentation.app.di.AppContext;
 import es.cifpcarlos3.pimandragora.presentation.app.navigation.PageNavigator;
 import es.cifpcarlos3.pimandragora.presentation.app.navigation.routes.PageRoutes;
@@ -42,7 +42,7 @@ public class BookDetailsController {
     private final DeleteBookUseCase deleteBookUseCase = context.getDeleteBookUseCase();
 
     // session-scoped resolver (cached signed urls)
-    private final CoverImageUrlResolver coverUrlResolver = context.session().coverResolver();
+    private final CoverImageUrlGenerator coverUrlResolver = context.session().coverResolver();
     // -------------------------
     // FXML
     // -------------------------
@@ -75,7 +75,7 @@ public class BookDetailsController {
     private void setCoverPreviewFrom(String coverImagePath) {
         if (coverImagePath == null || coverImagePath.isBlank()) return;
 
-        String url = coverUrlResolver.resolve(coverImagePath);
+        String url = coverUrlResolver.generate(coverImagePath);
         form.setCoverPreview(new Image(url, true));
     }
 
@@ -87,6 +87,27 @@ public class BookDetailsController {
             a.setContentText(ex.getMessage());
             a.showAndWait();
         });
+    }
+
+    private UpdateBookResponse getUpdateBookResponse() {
+        var draft = form.getDraft();
+
+        UpdateBookCommand cmd = new UpdateBookCommand(
+                draft.id(),
+                draft.isbn(),
+                draft.title(),
+                draft.authorId(),
+                draft.categoryId(),
+                draft.publisher(),
+                draft.publicationDate(),
+                draft.price(),
+                draft.stock(),
+                draft.status(),
+                draft.newCoverFile(),
+                draft.removeCover()
+        );
+
+        return updateBookUseCase.execute(cmd);
     }
 
     @FXML
@@ -112,75 +133,6 @@ public class BookDetailsController {
         }
     }
 
-    private void wireFormActions() {
-        form.setOnSave(this::onSave);
-        form.setOnCancel(this::onCancel);
-        form.setOnDelete(this::onDelete);
-    }
-
-    private void onSave() {
-        try {
-            var updated = getUpdateBookResponse();
-
-            // refresh signed urls (important if cover changed)
-            coverUrlResolver.clear();
-
-            // reload data and keep UI consistent
-            GetBookByIdResponse reloaded = getBookByIdUseCase.execute(updated.id());
-            form.setEditMode(reloaded);
-            setCoverPreviewFrom(reloaded.coverImagePath());
-
-            showInfo("Saved", "Book updated successfully.");
-
-        } catch (Exception ex) {
-            showError("Could not save changes", ex);
-        }
-    }
-
-    private UpdateBookResponse getUpdateBookResponse() {
-        var draft = form.getDraft();
-
-        UpdateBookCommand cmd = new UpdateBookCommand(
-                draft.id(),
-                draft.isbn(),
-                draft.title(),
-                draft.authorId(),
-                draft.categoryId(),
-                draft.publisher(),
-                draft.publicationDate(),
-                draft.price(),
-                draft.stock(),
-                draft.status(),
-                draft.newCoverFile(),
-                draft.removeCover()
-        );
-
-        return updateBookUseCase.execute(cmd);
-    }
-
-    private void showInfo(String header, String message) {
-        Platform.runLater(() -> {
-            Alert a = new Alert(Alert.AlertType.INFORMATION);
-            a.setTitle("Info");
-            a.setHeaderText(header);
-            a.setContentText(message);
-            a.showAndWait();
-        });
-    }
-
-    private void onCancel() {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
-                "Discard changes?",
-                ButtonType.CANCEL, ButtonType.OK);
-        confirm.setHeaderText("Cancel edit");
-
-        confirm.showAndWait().ifPresent(bt -> {
-            if (bt == ButtonType.OK) {
-                loadData();
-            }
-        });
-    }
-
     private void loadReferenceData() {
         try {
             List<FindAllAuthorsResponse> authors = findAllAuthorsUseCase.execute();
@@ -196,6 +148,19 @@ public class BookDetailsController {
         } catch (Exception ex) {
             showError("Failed to load authors/categories", ex);
         }
+    }
+
+    private void onCancel() {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                "Discard changes?",
+                ButtonType.CANCEL, ButtonType.OK);
+        confirm.setHeaderText("Cancel edit");
+
+        confirm.showAndWait().ifPresent(bt -> {
+            if (bt == ButtonType.OK) {
+                loadData();
+            }
+        });
     }
 
     private void onDelete() {
@@ -220,5 +185,40 @@ public class BookDetailsController {
                 showError("Could not delete book", ex);
             }
         });
+    }
+
+    private void onSave() {
+        try {
+            var updated = getUpdateBookResponse();
+
+            // refresh signed urls (important if cover changed)
+            coverUrlResolver.clear();
+
+            // reload data and keep UI consistent
+            GetBookByIdResponse reloaded = getBookByIdUseCase.execute(updated.id());
+            form.setEditMode(reloaded);
+            setCoverPreviewFrom(reloaded.coverImagePath());
+
+            showInfo("Saved", "Book updated successfully.");
+
+        } catch (Exception ex) {
+            showError("Could not save changes", ex);
+        }
+    }
+
+    private void showInfo(String header, String message) {
+        Platform.runLater(() -> {
+            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            a.setTitle("Info");
+            a.setHeaderText(header);
+            a.setContentText(message);
+            a.showAndWait();
+        });
+    }
+
+    private void wireFormActions() {
+        form.setOnSave(this::onSave);
+        form.setOnCancel(this::onCancel);
+        form.setOnDelete(this::onDelete);
     }
 }

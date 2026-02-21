@@ -7,11 +7,6 @@ import es.cifpcarlos3.pimandragora.infrastructure.auth.SupabaseAuthClient;
 
 public record GetCurrentUserUseCase(SupabaseAuthClient authClient, UserProfileRepository profileRepository) {
 
-    public GetCurrentUserUseCase {
-        if (authClient == null) throw new IllegalArgumentException("authClient is required");
-        if (profileRepository == null) throw new IllegalArgumentException("profileRepository is required");
-    }
-
     public GetCurrentUserResponse execute() {
         var authUser = authClient.getCurrentUser();
 
@@ -26,7 +21,7 @@ public record GetCurrentUserUseCase(SupabaseAuthClient authClient, UserProfileRe
 
         return new GetCurrentUserResponse(
                 authUser.id(),
-                authUser.email(),              // ✅ from auth
+                authUser.email(),
                 profile.getUsername(),
                 profile.getDisplayname(),
                 profile.getRole()
