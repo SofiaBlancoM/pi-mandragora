@@ -1,0 +1,111 @@
+
+
+.page-title {
+  -fx-font-size: 28px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #2d3436;
+}
+
+.muted {
+  -fx-text-fill: #636e72;
+  -fx-font-size: 14px;
+  -fx-background-radius: 5px;
+  -fx-border-width: 1;
+}
+
+
+.page-header, .page-body {
+  -fx-background-color: rgba(255,255,255,0.92);
+  -fx-background-radius: 16;
+  -fx-border-radius: 16;
+  -fx-border-color: rgba(0,0,0,0.08);
+  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 16, 0.18, 0, 4);
+  -fx-padding: 16;
+}
+
+
+.filters-bar {
+  -fx-padding: 4 0 0 0;
+}
+
+
+.filter-group {
+  -fx-min-width: 170;
+  -fx-pref-width: 185;
+  -fx-max-width: 210;
+}
+
+.search-field, .filter-box {
+  -fx-min-height: 38;
+}
+
+
+
+.scroll-pane {
+  -fx-background-color: transparent;
+  -fx-background: transparent;
+  -fx-border-color: transparent;
+  -fx-padding: 5;
+}
+
+.scroll-pane > .viewport {
+  -fx-background-color: transparent;
+}
+
+
+
+.author-card {
+  -fx-background-color: #ffffff;
+  -fx-background-radius: 14px;
+  -fx-border-radius: 14px;
+  -fx-border-color: #f1f2f6;
+  -fx-border-width: 1;
+  -fx-padding: 15;
+  -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 8, 0, 0, 3);
+}
+
+.author-card:hover {
+  -fx-border-color: #6c5ce7;
+  -fx-cursor: hand;
+}
+
+.author-name-title {
+  -fx-font-size: 16px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #2d3436;
+}
+
+
+
+.authors-pagination .pagination-control {
+  -fx-padding: 10;
+}
+
+.authors-pagination .toggle-button,
+.authors-pagination .button {
+  -fx-background-color: #f1f2f6;
+  -fx-text-fill: #2d3436;
+  -fx-background-radius: 8px;
+}
+
+.authors-pagination .toggle-button:selected {
+  -fx-background-color: #6c5ce7;
+  -fx-text-fill: #ffffff;
+}
+
+
+
+.footer-bar {
+  -fx-padding: 10 15;
+  -fx-border-color: #f1f2f6 transparent transparent transparent;
+}
+
+.form-error {
+  -fx-background-color: rgba(198, 40, 40, 0.10);
+  -fx-text-fill: #c62828;
+  -fx-border-color: rgba(198, 40, 40, 0.20);
+  -fx-border-radius: 14px;
+  -fx-background-radius: 14px;
+  -fx-padding: 10px;
+  -fx-font-weight: 800;
+}

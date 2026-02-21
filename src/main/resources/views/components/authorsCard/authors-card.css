@@ -1,0 +1,30 @@
+.author-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 14px;
+    -fx-border-radius: 14px;
+    -fx-border-color: #f1f2f6;
+    -fx-border-width: 1;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 8, 0, 0, 3);
+}
+
+.card-content {
+
+    -fx-alignment: TOP_LEFT;
+}
+
+.author-name-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2d3436;
+    -fx-padding: 0 0 10 0;
+}
+
+.author-bio-short {
+    -fx-font-size: 12px;
+    -fx-text-fill: #7f8c8d;
+    -fx-line-spacing: 1.2;
+    -fx-italic: true;
+    -fx-alignment: BOTTOM_LEFT;
+    -fx-padding: 10 0 0 0;
+}

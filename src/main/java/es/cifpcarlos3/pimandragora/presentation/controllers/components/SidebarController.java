@@ -19,59 +19,31 @@ import org.slf4j.LoggerFactory;
 
 public class SidebarController {
 
-    private static final Logger log =
-            LoggerFactory.getLogger(SidebarController.class);
-
+    private static final Logger log = LoggerFactory.getLogger(SidebarController.class);
     private static final PseudoClass SELECTED = PseudoClass.getPseudoClass("selected");
 
-    // Manual wiring
     private final AppContext context = AppContext.get();
     private final GetCurrentUserUseCase getCurrentUserUseCase = context.getGetCurrentUserUseCase();
 
-    // FXML (User)
-    @FXML
-    private Button profileButton;
-    @FXML
-    private Label userNameLabel;
-    @FXML
-    private Label userEmailLabel;
+    @FXML private Button profileButton;
+    @FXML private Label userNameLabel;
+    @FXML private Label userEmailLabel;
 
-    // FXML (Nav)
-    @FXML
-    private Button booksButton;
-    @FXML
-    private Button authorButton;
-    @FXML
-    private Button categoryButton;
-    @FXML
-    private Button settingsButton;
-    @FXML
-    private Button helpButton;
-
-    // FXML (Footer)
-    @FXML
-    private Button logoutButton;
+    @FXML private Button booksButton;
+    @FXML private Button authorButton;
+    @FXML private Button categoryButton;
+    @FXML private Button settingsButton;
+    @FXML private Button helpButton;
+    @FXML private Button logoutButton;
 
     private Button selectedButton;
+
+    // --- Navegación ---
 
     public void goToAuthors(ActionEvent e) {
         log.info("Navigate: Authors");
         selectNav(authorButton);
         PageNavigator.goTo(PageRoutes.AUTHORS);
-    }
-
-    // -------------------------
-    // UI helpers
-    // -------------------------
-    private void selectNav(Button btn) {
-        if (btn == null) return;
-
-        if (selectedButton != null) {
-            selectedButton.pseudoClassStateChanged(SELECTED, false);
-        }
-
-        selectedButton = btn;
-        selectedButton.pseudoClassStateChanged(SELECTED, true);
     }
 
     public void goToBooks(ActionEvent e) {
@@ -95,20 +67,26 @@ public class SidebarController {
     public void goToSettings(ActionEvent e) {
         log.info("Navigate: Settings");
         selectNav(settingsButton);
-        // PageNavigator.goTo(PageRoutes.SETTINGS);
+
     }
 
-    // -------------------------
-    // Logout
-    // -------------------------
+    private void selectNav(Button btn) {
+        if (btn == null) return;
+        if (selectedButton != null) {
+            selectedButton.pseudoClassStateChanged(SELECTED, false);
+        }
+        selectedButton = btn;
+        selectedButton.pseudoClassStateChanged(SELECTED, true);
+    }
+
+
+
     public void logout(ActionEvent e) {
         log.info("Logout requested");
-
         try {
             context.logout();
             log.info("Logout completed");
         } catch (Exception ex) {
-
             log.warn("Logout failed (will clear local session anyway)", ex);
         } finally {
             SupabaseSession.clear();
@@ -119,7 +97,6 @@ public class SidebarController {
     @FXML
     private void initialize() {
         log.debug("Sidebar initialized");
-
         setUserLabels("-", "-");
 
         Thread t = new Thread(this::loadCurrentUserSafely, "sidebar-load-user");
@@ -134,9 +111,6 @@ public class SidebarController {
         if (userEmailLabel != null) userEmailLabel.setText(email);
     }
 
-    // -------------------------
-    // User loading
-    // -------------------------
     private void loadCurrentUserSafely() {
         try {
             if (!SupabaseSession.hasToken()) {
@@ -153,7 +127,6 @@ public class SidebarController {
 
             log.debug("Sidebar user loaded name={} email={}", name, email);
             Platform.runLater(() -> setUserLabels(name, email));
-
         } catch (Exception ex) {
             log.warn("Failed to load current user for sidebar", ex);
             Platform.runLater(() -> setUserLabels("-", "-"));
@@ -162,16 +135,12 @@ public class SidebarController {
 
     private static String pickBestName(GetCurrentUserResponse u) {
         if (u == null) return "-";
-
         String displayName = safe(u.displayName());
         if (!displayName.equals("-")) return displayName;
-
         String username = safe(u.username());
         if (!username.equals("-")) return username;
-
         String email = safe(u.email());
         if (!email.equals("-") && email.contains("@")) return email.substring(0, email.indexOf("@"));
-
         return "-";
     }
 
