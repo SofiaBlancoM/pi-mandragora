@@ -7,6 +7,9 @@ import javafx.scene.Scene;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * Navegación entre el auth y main layout
+ */
 public final class SceneNavigator {
 
     private static Scene scene;
@@ -19,7 +22,7 @@ public final class SceneNavigator {
     }
 
     public static void setRoot(String fxmlPath) {
-        Objects.requireNonNull(scene, "Scene is not bound to AppNavigator");
+        Objects.requireNonNull(scene, "La escena no está ligada al SceneNavigator");
 
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(
@@ -27,7 +30,7 @@ public final class SceneNavigator {
             ));
             scene.setRoot(root);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to load root: " + fxmlPath, e);
+            throw new RuntimeException("Fallo al cargar la ruta: " + fxmlPath, e);
         }
     }
 }

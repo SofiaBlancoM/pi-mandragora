@@ -2,12 +2,10 @@
     -fx-background-color: transparent;
 }
 
-/* This column is what makes everything align nicely */
 .page-container {
     -fx-alignment: top-center;
 }
 
-/* Give header + body the same "surface" look */
 .page-header, .page-body {
     -fx-background-color: rgba(255,255,255,0.92);
     -fx-background-radius: 16;
@@ -17,12 +15,10 @@
     -fx-padding: 16;
 }
 
-/* Filters */
 .filters-bar {
     -fx-padding: 4 0 0 0;
 }
 
-/* Consistent widths so they don't stretch weirdly */
 .filter-group {
     -fx-min-width: 170;
     -fx-pref-width: 185;
@@ -33,7 +29,6 @@
     -fx-min-height: 38;
 }
 
-/* Pagination should not add its own background */
 .books-pagination {
     -fx-background-color: transparent;
 }

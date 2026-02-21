@@ -9,7 +9,6 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml" prefHeight="720" prefWidth="1200" stylesheets="@login.css"
             fx:controller="es.cifpcarlos3.pimandragora.presentation.controllers.pages.LoginController">
 
-    <!-- LEFT: Form -->
     <left>
         <StackPane styleClass="login-left">
             <VBox alignment="CENTER" maxWidth="801.0" prefHeight="720.0" prefWidth="781.0" spacing="24.0"
@@ -33,11 +32,11 @@
                 <VBox alignment="CENTER" spacing="24.0">
                     <VBox maxWidth="400.0" spacing="6">
                         <Label styleClass="field-label" text="Email"/>
-                        <TextField fx:id="emailField" maxWidth="400.0" promptText="you@example.com"/>
+                        <TextField fx:id="emailField" maxWidth="400.0" promptText="nombre@ejemplo.com"/>
                     </VBox>
 
                     <VBox maxWidth="400.0" spacing="6">
-                        <Label styleClass="field-label" text="Password"/>
+                        <Label styleClass="field-label" text="Contraseña"/>
                         <PasswordField fx:id="passwordField" maxWidth="400.0" promptText="••••••••"/>
                     </VBox>
 
@@ -52,7 +51,6 @@
         </StackPane>
     </left>
 
-    <!-- RIGHT: Image / Hero -->
     <center>
         <StackPane styleClass="login-right">
             <VBox alignment="CENTER" maxWidth="520" spacing="16">
@@ -61,8 +59,8 @@
                 </ImageView>
 
                 <VBox alignment="CENTER" spacing="6">
-                    <Label styleClass="hero-title" text="Manage your library faster"/>
-                    <Label styleClass="hero-subtitle" text="Search, organize and track your content in one place."
+                    <Label styleClass="hero-title" text="Gestiona tu librería fácilmente"/>
+                    <Label styleClass="hero-subtitle" text="Busca y organiza todo tu contenido desde el mismo sitio"
                            wrapText="true"/>
                 </VBox>
             </VBox>

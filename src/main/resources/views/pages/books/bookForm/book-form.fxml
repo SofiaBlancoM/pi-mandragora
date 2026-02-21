@@ -16,7 +16,6 @@
         <Insets top="18" right="18" bottom="18" left="18"/>
     </padding>
 
-    <!-- Header -->
     <HBox alignment="CENTER_LEFT" spacing="12" styleClass="form-header">
         <VBox spacing="2">
             <Label fx:id="titleHeader" text="Detalles del libro" styleClass="form-title"/>
@@ -25,16 +24,13 @@
 
         <Region HBox.hgrow="ALWAYS"/>
 
-        <!-- status chip -->
         <Label fx:id="statusChip" visible="false" managed="false" styleClass="chip chip-status"/>
     </HBox>
 
     <Separator styleClass="soft-sep"/>
 
-    <!-- Content -->
     <HBox spacing="18" styleClass="form-content">
 
-        <!-- Left: cover -->
         <VBox spacing="12" prefWidth="260" styleClass="cover-panel">
 
             <Label text="Portada" styleClass="section-title"/>
@@ -68,10 +64,8 @@
 
         </VBox>
 
-        <!-- Right: fields -->
         <VBox spacing="14" HBox.hgrow="ALWAYS" styleClass="fields-panel">
 
-            <!-- Row 1 -->
             <GridPane hgap="14" vgap="12">
                 <columnConstraints>
                     <ColumnConstraints hgrow="ALWAYS"/>
@@ -103,7 +97,6 @@
                 </VBox>
             </GridPane>
 
-            <!-- Row 2 -->
             <GridPane hgap="14" vgap="12">
                 <columnConstraints>
                     <ColumnConstraints hgrow="ALWAYS"/>
@@ -127,7 +120,6 @@
                 </VBox>
             </GridPane>
 
-            <!-- Row 3 -->
             <GridPane hgap="14" vgap="12">
                 <columnConstraints>
                     <ColumnConstraints hgrow="ALWAYS"/>
@@ -147,7 +139,6 @@
                 </VBox>
             </GridPane>
 
-            <!-- Form error -->
             <Label fx:id="formError"
                    visible="false"
                    managed="false"
@@ -156,7 +147,6 @@
 
             <Separator styleClass="soft-sep"/>
 
-            <!-- Footer actions -->
             <HBox alignment="CENTER_RIGHT" spacing="10" styleClass="form-actions">
                 <Region HBox.hgrow="ALWAYS"/>
 

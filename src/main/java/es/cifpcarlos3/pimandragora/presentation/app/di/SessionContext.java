@@ -5,6 +5,12 @@ import es.cifpcarlos3.pimandragora.application.common.images.CoverImageUrlGenera
 
 import java.util.Objects;
 
+/**
+ * Reinicia la caché de la generación de urls para las imágenes del bucket
+ *
+ * @param currentUser
+ * @param coverResolver
+ */
 public record SessionContext(AuthUserDto currentUser, CoverImageUrlGenerator coverResolver) {
 
     public SessionContext(AuthUserDto currentUser, CoverImageUrlGenerator coverResolver) {
@@ -12,10 +18,7 @@ public record SessionContext(AuthUserDto currentUser, CoverImageUrlGenerator cov
         this.coverResolver = Objects.requireNonNull(coverResolver, "coverResolver is required");
     }
 
-    /**
-     * Call when leaving session (logout)
-     */
     public void dispose() {
-        coverResolver.clear(); // clears signed-url cache
+        coverResolver.clear();
     }
 }

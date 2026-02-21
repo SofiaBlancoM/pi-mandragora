@@ -42,7 +42,6 @@
     -fx-padding: 2px 0 0 0;
 }
 
-/* Cover container polish (if not already in your card css) */
 .cover-container {
     -fx-background-radius: 14px;
     -fx-border-radius: 14px;
@@ -51,7 +50,6 @@
     -fx-border-color: rgba(17, 24, 39, 0.08);
 }
 
-/* Form error as a “snackbar/alert” */
 .form-error {
     -fx-background-color: rgba(198, 40, 40, 0.10);
     -fx-text-fill: rgba(198, 40, 40, 0.95);
@@ -62,7 +60,6 @@
     -fx-font-weight: 800;
 }
 
-/* Optional: make Danger a bit more “contained” here */
 .danger-button {
     -fx-background-radius: 999px;
 }

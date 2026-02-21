@@ -6,22 +6,15 @@ import es.cifpcarlos3.pimandragora.shared.utils.url.BaseUrlNormalizer;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * Clase para recuperar las propiedades del local.properties y de las variables de entorno
+ */
 public final class AppConfig {
 
     private static final Properties PROPS = new Properties();
 
     static {
         load();
-    }
-
-    public static boolean getBool(PropertyKey key) {
-        String v = getProperty(key).trim().toLowerCase();
-        return v.equals("true") || v.equals("1") || v.equals("yes");
-    }
-
-    //Getters
-    public static String getProperty(PropertyKey key) {
-        return PROPS.getProperty(key.propertyKey);
     }
 
     public static int getInt(PropertyKey key) {
@@ -31,6 +24,10 @@ public final class AppConfig {
         } catch (NumberFormatException ex) {
             throw new IllegalStateException("Invalid int for " + key + ": " + v, ex);
         }
+    }
+
+    public static String getProperty(PropertyKey key) {
+        return PROPS.getProperty(key.propertyKey);
     }
 
     public static int getInt(PropertyKey key, int defaultValue) {
@@ -44,11 +41,6 @@ public final class AppConfig {
                     "Invalid int for property " + key.propertyKey + ": " + raw, ex
             );
         }
-    }
-
-    public static String getString(PropertyKey key, String defaultValue) {
-        String v = PROPS.getProperty(key.propertyKey);
-        return (v == null || v.isBlank()) ? defaultValue : v;
     }
 
     public static String supabaseUrl() {

@@ -33,23 +33,22 @@ import es.cifpcarlos3.pimandragora.presentation.books.viewmodels.BooksViewModel;
 import lombok.AccessLevel;
 import lombok.Getter;
 
+/**
+ * Inyección de dependencias manual
+ */
 public final class AppContext {
-    // -------------------------------------------------------------------------
-    // Singleton access
-    // -------------------------------------------------------------------------
+
     private static volatile AppContext INSTANCE;
-    // -------------------------------------------------------------------------
-    // Infra (hidden)
-    // -------------------------------------------------------------------------
+
+    // Infrastructure
     @Getter(AccessLevel.NONE)
     private final SupabaseHttpClient supabase;
     @Getter(AccessLevel.NONE)
     private final PostgreClient postgrest;
     @Getter(AccessLevel.NONE)
     private final StorageApi storageApi;
-    // -------------------------------------------------------------------------
-    // App services / use cases (exposed)
-    // -------------------------------------------------------------------------
+
+    // Application casos de uso
     @Getter
     private final SupabaseAuthClient authClient;
     @Getter
@@ -69,35 +68,25 @@ public final class AppContext {
     @Getter
     private final GetCurrentUserUseCase getCurrentUserUseCase;
 
-    // -------------------------------------------------------------------------
-    // .Properties configuration
-    // -------------------------------------------------------------------------
+
+    //Configuración .properties
     int pageSize = AppConfig.getInt(PropertyKey.BOOKS_PAGE_SIZE, ConfigConstants.DEFAULT_BOOKS_PAGE_SIZE);
     int signedUrlTimeinSeconds = AppConfig.getInt(PropertyKey.SIGNED_URL_TTL_SECONDS, ConfigConstants.DEFAULT_SIGNED_URL_TTL);
 
-    // -------------------------------------------------------------------------
-    // Session (mutable)
-    // -------------------------------------------------------------------------
     private volatile SessionContext session;
 
-    // -------------------------------------------------------------------------
-    // Wiring
-    // -------------------------------------------------------------------------
     private AppContext() {
         this.supabase = new SupabaseHttpClient();
         this.postgrest = new PostgreClient(supabase);
         this.storageApi = new StorageApi(supabase);
 
-        // Repositories are local (no need to expose as fields)
         var bookQueryRepository = new SupabaseBookQueryRepository(postgrest);
         var bookRepository = new SupabaseBookRepository(postgrest);
         var userProfileRepository = new SupabaseUserProfileRepository(postgrest);
         var coverStorage = new SupabaseBookCoverImageStorage(storageApi);
 
-        // Auth
         this.authClient = new SupabaseAuthClient(supabase);
 
-        // Use cases
         this.getBooksUseCase = new GetBooksUseCase(bookQueryRepository);
         this.findAllCategoriesUseCase = new FindAllCategoriesUseCase(new SupabaseCategoryQueryRepository(postgrest));
 
@@ -111,7 +100,7 @@ public final class AppContext {
     }
 
     public static AppContext get() {
-        if (INSTANCE == null) throw new IllegalStateException("AppContext not initialized");
+        if (INSTANCE == null) throw new IllegalStateException("AppContext no inicializado");
         return INSTANCE;
     }
 
@@ -131,26 +120,20 @@ public final class AppContext {
         INSTANCE = new AppContext();
     }
 
-    // -------------------------------------------------------------------------
-    // Session lifecycle
-    // -------------------------------------------------------------------------
     public boolean isLoggedIn() {
         return session != null && SupabaseSession.hasToken();
     }
 
     public AuthSessionDto login(String email, String password) {
-        AuthSessionDto s = authClient.login(email, password);
+        AuthSessionDto authSessionDto = authClient.login(email, password);
 
         AuthUserDto user = authClient.getCurrentUser();
         CoverImageUrlGenerator coverResolver = new SupabaseCoverImageUrlGenerator(storageApi, this.signedUrlTimeinSeconds);
 
         replaceSession(new SessionContext(user, coverResolver));
-        return s;
+        return authSessionDto;
     }
 
-    // -------------------------------------------------------------------------
-    // Internals
-    // -------------------------------------------------------------------------
     private void replaceSession(SessionContext newSession) {
         if (session != null) session.dispose();
         session = newSession;
@@ -172,15 +155,12 @@ public final class AppContext {
         }
     }
 
-    // -------------------------------------------------------------------------
-    // Factories (page scope)
-    // -------------------------------------------------------------------------
     public BooksViewModel newBooksViewModel() {
         return new BooksViewModel(getBooksUseCase, session().coverResolver(), this.pageSize);
     }
 
     public SessionContext session() {
-        if (session == null) throw new IllegalStateException("No active session (user not logged in)");
+        if (session == null) throw new IllegalStateException("Usuario no logueado");
         return session;
     }
 }

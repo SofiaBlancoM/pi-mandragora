@@ -9,15 +9,17 @@ import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
+/**
+ * Navegación en el main layout
+ */
 public class PageNavigator {
     private static final CopyOnWriteArrayList<Consumer<String>> listeners = new CopyOnWriteArrayList<>();
     private static StackPane host;
-    // ---- new: current route + listeners ----
+
     private static volatile String currentRoute;
 
     public static void addRouteListener(Consumer<String> listener) {
         listeners.add(listener);
-        // sync immediately so sidebar marks correctly on first render
         if (currentRoute != null) listener.accept(currentRoute);
     }
 
@@ -51,9 +53,8 @@ public class PageNavigator {
 
             host.getChildren().setAll(view);
 
-            // ---- new: publish route change AFTER successful navigation ----
             currentRoute = fxmlPath;
-            listeners.forEach(l -> l.accept(fxmlPath));
+            listeners.forEach(listener -> listener.accept(fxmlPath));
 
         } catch (IOException e) {
             throw new RuntimeException("Failed to load: " + fxmlPath, e);

@@ -6,7 +6,6 @@
             fx:controller="es.cifpcarlos3.pimandragora.presentation.books.controllers.pages.BookDetailsController"
             prefWidth="960" prefHeight="640">
 
-    <!-- Shared form will be injected here -->
     <center>
         <StackPane fx:id="contentHost"/>
     </center>

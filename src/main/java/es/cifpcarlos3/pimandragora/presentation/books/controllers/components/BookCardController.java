@@ -18,7 +18,6 @@ public class BookCardController {
     private VBox root;
     @FXML
     private ImageView coverImageView;
-
     @FXML
     private Label titleLabel;
     @FXML
@@ -27,7 +26,6 @@ public class BookCardController {
     private Label categoryLabel;
     @FXML
     private Label yearLabel;
-
     @FXML
     private Label statusBadge;
     @FXML
@@ -69,7 +67,6 @@ public class BookCardController {
 
         if (status == null) status = BookStatus.ACTIVE;
 
-        // reset effect by default
         coverImageView.setEffect(null);
 
         switch (status) {
@@ -140,7 +137,6 @@ public class BookCardController {
     private void initialize() {
         placeholder = coverImageView.getImage();
 
-        // click on image navigates; consume to avoid bubbling/double fire
         root.setOnMouseClicked(e -> {
             e.consume();
             onClick.run();

@@ -20,7 +20,7 @@ public class MandragoraApplication extends Application {
     public void start(Stage stage) {
         AppContext.init();
         Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
-        // Create the Scene once
+
         Scene scene = new Scene(new StackPane(), 1200, 800);
         SceneNavigator.bindScene(scene);
 
@@ -28,7 +28,6 @@ public class MandragoraApplication extends Application {
                 Objects.requireNonNull(getClass().getResource(ResourcesConstants.BASE_STYLES_PATH)).toExternalForm()
         );
 
-        // Start at login
         SceneNavigator.setRoot(LayoutRoutes.AUTH_LAYOUT);
 
         stage.setTitle(AppConfig.getProperty(PropertyKey.APP_NAME));
