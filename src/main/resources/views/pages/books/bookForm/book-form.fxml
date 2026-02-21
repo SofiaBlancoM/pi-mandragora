@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="es.cifpcarlos3.pimandragora.presentation.books.controllers.pages.BookFormController"
+      fx:id="root"
+      spacing="14"
+      styleClass="form-card surface"
+      stylesheets="@book-form.css">
+
+    <padding>
+        <Insets top="18" right="18" bottom="18" left="18"/>
+    </padding>
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="form-header">
+        <VBox spacing="2">
+            <Label fx:id="titleHeader" text="Detalles del libro" styleClass="form-title"/>
+            <Label text="Edita la información y guarda los cambios" styleClass="muted form-subtitle"/>
+        </VBox>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <!-- status chip -->
+        <Label fx:id="statusChip" visible="false" managed="false" styleClass="chip chip-status"/>
+    </HBox>
+
+    <Separator styleClass="soft-sep"/>
+
+    <!-- Content -->
+    <HBox spacing="18" styleClass="form-content">
+
+        <!-- Left: cover -->
+        <VBox spacing="12" prefWidth="260" styleClass="cover-panel">
+
+            <Label text="Portada" styleClass="section-title"/>
+
+            <StackPane styleClass="cover-container">
+                <ImageView fx:id="coverPreview"
+                           fitWidth="216"
+                           fitHeight="280"
+                           preserveRatio="true">
+                    <Image url="@../../../../assets/images/default-cover-book-image.png"/>
+                </ImageView>
+
+                <Label fx:id="coverBadge" visible="false" managed="false" styleClass="status-badge"/>
+            </StackPane>
+
+            <HBox spacing="12">
+                <Button fx:id="changeCoverButton"
+                        text="Cambiar portada"
+                        styleClass="secondary-button"
+                        HBox.hgrow="ALWAYS"/>
+
+                <Button fx:id="removeCoverButton"
+                        text="Eliminar"
+                        styleClass="danger-button"/>
+            </HBox>
+
+            <Label fx:id="coverHint"
+                   text="Consejo: JPG o PNG. Se subirá al guardar."
+                   wrapText="true"
+                   styleClass="muted"/>
+
+        </VBox>
+
+        <!-- Right: fields -->
+        <VBox spacing="14" HBox.hgrow="ALWAYS" styleClass="fields-panel">
+
+            <!-- Row 1 -->
+            <GridPane hgap="14" vgap="12">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                </columnConstraints>
+
+                <VBox spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label text="Título" styleClass="field-label"/>
+                    <TextField fx:id="titleField" promptText="Título del libro" styleClass="field"/>
+                    <Label fx:id="titleError" visible="false" managed="false" styleClass="field-error"/>
+                </VBox>
+
+                <VBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label text="ISBN" styleClass="field-label"/>
+                    <TextField fx:id="isbnField" promptText="978..." styleClass="field"/>
+                    <Label fx:id="isbnError" visible="false" managed="false" styleClass="field-error"/>
+                </VBox>
+
+                <VBox spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <Label text="Autor" styleClass="field-label"/>
+                    <ComboBox fx:id="authorCombo" promptText="Seleccionar autor" styleClass="field"/>
+                    <Label fx:id="authorError" visible="false" managed="false" styleClass="field-error"/>
+                </VBox>
+
+                <VBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Label text="Categoría" styleClass="field-label"/>
+                    <ComboBox fx:id="categoryCombo" promptText="Seleccionar categoría" styleClass="field"/>
+                    <Label fx:id="categoryError" visible="false" managed="false" styleClass="field-error"/>
+                </VBox>
+            </GridPane>
+
+            <!-- Row 2 -->
+            <GridPane hgap="14" vgap="12">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                </columnConstraints>
+
+                <VBox spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label text="Editorial" styleClass="field-label"/>
+                    <TextField fx:id="publisherField" promptText="Editorial (opcional)" styleClass="field"/>
+                </VBox>
+
+                <VBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label text="Fecha de publicación" styleClass="field-label"/>
+                    <DatePicker fx:id="publicationDatePicker" styleClass="field"/>
+                </VBox>
+
+                <VBox spacing="6" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                    <Label text="Estado" styleClass="field-label"/>
+                    <ComboBox fx:id="statusCombo" promptText="Estado" styleClass="field"/>
+                </VBox>
+            </GridPane>
+
+            <!-- Row 3 -->
+            <GridPane hgap="14" vgap="12">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                </columnConstraints>
+
+                <VBox spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label text="Precio" styleClass="field-label"/>
+                    <TextField fx:id="priceField" promptText="Ej: 19,99" styleClass="field"/>
+                    <Label fx:id="priceError" visible="false" managed="false" styleClass="field-error"/>
+                </VBox>
+
+                <VBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label text="Stock" styleClass="field-label"/>
+                    <Spinner fx:id="stockSpinner" styleClass="field"/>
+                    <Label fx:id="stockError" visible="false" managed="false" styleClass="field-error"/>
+                </VBox>
+            </GridPane>
+
+            <!-- Form error -->
+            <Label fx:id="formError"
+                   visible="false"
+                   managed="false"
+                   wrapText="true"
+                   styleClass="form-error"/>
+
+            <Separator styleClass="soft-sep"/>
+
+            <!-- Footer actions -->
+            <HBox alignment="CENTER_RIGHT" spacing="10" styleClass="form-actions">
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Button fx:id="deleteButton"
+                        text="Eliminar"
+                        styleClass="danger-button"
+                        visible="false" managed="false"/>
+
+                <Button fx:id="cancelButton" text="Cancelar" styleClass="secondary-button"/>
+                <Button fx:id="saveButton" text="Guardar cambios" styleClass="primary-button"/>
+            </HBox>
+
+        </VBox>
+
+    </HBox>
+
+</VBox>

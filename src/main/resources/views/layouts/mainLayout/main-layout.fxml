@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="es.cifpcarlos3.pimandragora.presentation.controllers.layouts.MainLayoutController"
+            styleClass="app-root"
+            stylesheets="@main-layout.css"
+            prefHeight="1080.0" prefWidth="1600.0">
+
+    <left>
+        <StackPane styleClass="sidebar-container">
+            <fx:include source="../../components/sidebar/sidebar.fxml"/>
+        </StackPane>
+    </left>
+
+    <center>
+        <StackPane styleClass="content-container">
+            <padding>
+                <Insets top="16" right="16" bottom="16" left="16"/>
+            </padding>
+            <StackPane fx:id="contentHost" styleClass="content-host"/>
+        </StackPane>
+    </center>
+
+</BorderPane>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="es.cifpcarlos3.pimandragora.presentation.books.controllers.pages.BookListController"
+           stylesheets="@books-list.css"
+           styleClass="page-root">
+
+    <!-- This is the centered "content column" -->
+    <VBox spacing="14" styleClass="page-container" maxWidth="1180">
+
+        <padding>
+            <Insets top="16" right="16" bottom="16" left="16"/>
+        </padding>
+
+        <!-- Header surface -->
+        <VBox spacing="12" styleClass="page-header">
+
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <VBox spacing="2">
+                    <Label text="Libros" styleClass="page-title"/>
+                    <Label text="Gestiona el catálogo, filtra y ordena resultados."
+                           styleClass="muted"/>
+                </VBox>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Button text="Borrar filtros" styleClass="secondary-button" fx:id="refreshButton"/>
+                <Button styleClass="primary-button" fx:id="newBookButton">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi2b-book-plus-outline" styleClass="nav-icon"/>
+                    </graphic>
+                </Button>
+            </HBox>
+
+            <HBox alignment="BOTTOM_LEFT" spacing="12" styleClass="filters-bar">
+
+                <!-- Make the WHOLE VBox grow, not only the TextField -->
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Búsqueda" styleClass="filter-label"/>
+                    <TextField fx:id="searchField"
+                               promptText="Buscar por título, ISBN, editorial…"
+                               styleClass="search-field"/>
+                </VBox>
+
+                <VBox spacing="4" styleClass="filter-group">
+                    <Label text="Estado" styleClass="filter-label"/>
+                    <ComboBox fx:id="statusFilter" styleClass="filter-box"/>
+                </VBox>
+
+                <VBox spacing="4" styleClass="filter-group">
+                    <Label text="Categoría" styleClass="filter-label"/>
+                    <ComboBox fx:id="categoryFilter" styleClass="filter-box"/>
+                </VBox>
+
+                <VBox spacing="4" styleClass="filter-group">
+                    <Label text="Ordenar por:" styleClass="filter-label"/>
+                    <ComboBox fx:id="sortFilter" styleClass="filter-box"/>
+                </VBox>
+
+            </HBox>
+        </VBox>
+
+        <!-- Body surface -->
+        <VBox spacing="10" styleClass="page-body" VBox.vgrow="ALWAYS">
+
+            <Pagination fx:id="pagination"
+                        styleClass="books-pagination"
+                        VBox.vgrow="ALWAYS"/>
+
+            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="footer-bar">
+                <Label fx:id="resultsLabel" text=" " styleClass="muted"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <ProgressIndicator fx:id="loadingIndicator" visible="false" managed="false"
+                                   maxWidth="18" maxHeight="18"/>
+                <Label fx:id="errorLabel" text=" " styleClass="error-text"/>
+            </HBox>
+        </VBox>
+
+    </VBox>
+
+</StackPane>

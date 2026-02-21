@@ -1,0 +1,68 @@
+.form-card {
+    -fx-background-color: -c-surface;
+    -fx-background-radius: 18px;
+    -fx-border-radius: 18px;
+    -fx-border-color: -c-border;
+    -fx-effect: -shadow-1;
+}
+
+.form-header .form-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: 900;
+    -fx-text-fill: -c-text;
+}
+
+.form-subtitle {
+    -fx-font-size: 12px;
+}
+
+.section-title {
+    -fx-font-size: 12px;
+    -fx-font-weight: 800;
+    -fx-text-fill: -c-muted;
+}
+
+.soft-sep {
+    -fx-opacity: 0.45;
+}
+
+.cover-panel {
+    -fx-background-color: -c-surface-2;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+    -fx-border-color: -c-border;
+    -fx-padding: 12px;
+}
+
+.fields-panel {
+    -fx-padding: 2px 0 0 0;
+}
+
+.form-actions {
+    -fx-padding: 2px 0 0 0;
+}
+
+/* Cover container polish (if not already in your card css) */
+.cover-container {
+    -fx-background-radius: 14px;
+    -fx-border-radius: 14px;
+    -fx-background-color: rgba(0,0,0,0.04);
+    -fx-padding: 10px;
+    -fx-border-color: rgba(17, 24, 39, 0.08);
+}
+
+/* Form error as a “snackbar/alert” */
+.form-error {
+    -fx-background-color: rgba(198, 40, 40, 0.10);
+    -fx-text-fill: rgba(198, 40, 40, 0.95);
+    -fx-border-color: rgba(198, 40, 40, 0.20);
+    -fx-border-radius: 14px;
+    -fx-background-radius: 14px;
+    -fx-padding: 10px 12px 10px 12px;
+    -fx-font-weight: 800;
+}
+
+/* Optional: make Danger a bit more “contained” here */
+.danger-button {
+    -fx-background-radius: 999px;
+}

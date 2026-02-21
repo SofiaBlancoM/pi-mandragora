@@ -1,0 +1,335 @@
+/* =========================
+   DESIGN TOKENS (Looked-up colors)
+   ========================= */
+.root {
+    /* Bookstore / warm material palette */
+    -c-bg: #F6F2ED;            /* warm paper */
+    -c-surface: #FFFFFF;       /* cards/panels */
+    -c-surface-2: #FAF7F3;     /* subtle alt surface */
+    -c-border: rgba(17, 24, 39, 0.10);
+    -c-text: rgba(17, 24, 39, 0.92);   /* ink */
+    -c-muted: rgba(17, 24, 39, 0.58);
+
+    -c-primary: #7B1E3A;       /* burgundy */
+    -c-primary-2: #9B2C4A;     /* hover burgundy */
+    -c-primary-soft: rgba(123, 30, 58, 0.12);
+
+    -c-accent: #C07A2C;        /* warm amber */
+    -c-accent-soft: rgba(192, 122, 44, 0.14);
+
+    -c-danger: #C62828;
+
+    /* Radii tokens (ok to keep, but avoid using them inside -fx-background-radius on some skins) */
+    -r-sm: 10px;
+    -r-md: 14px;
+    -r-lg: 18px;
+    -r-pill: 999px;
+
+    /* Layout tokens */
+    -control-h: 40px;
+
+    /* Shadows */
+    -shadow-1: dropshadow(gaussian, rgba(0,0,0,0.10), 16, 0.22, 0, 6);
+    -shadow-2: dropshadow(gaussian, rgba(0,0,0,0.14), 22, 0.24, 0, 10);
+
+    /* JavaFX defaults */
+    -fx-font-family: "Inter", "Segoe UI", "SF Pro Display", "Roboto", "System";
+    -fx-background-color: -c-bg;
+    -fx-text-fill: -c-text;
+
+    /* Controls */
+    -fx-accent: -c-primary;
+    -fx-focus-color: rgba(123, 30, 58, 0.35);
+    -fx-faint-focus-color: rgba(123, 30, 58, 0.12);
+}
+
+/* =========================
+   Typography helpers
+   ========================= */
+.page-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: 900;
+    -fx-text-fill: -c-text;
+}
+
+.form-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: 900;
+    -fx-text-fill: -c-text;
+}
+
+.muted {
+    -fx-text-fill: -c-muted;
+}
+
+.error-text {
+    -fx-text-fill: rgba(198, 40, 40, 0.95);
+    -fx-font-weight: 700;
+}
+
+/* =========================
+   Surfaces / cards
+   ========================= */
+.surface {
+    -fx-background-color: -c-surface;
+    -fx-background-radius: 18px;
+    -fx-border-radius: 18px;
+    -fx-border-color: -c-border;
+    -fx-effect: -shadow-1;
+}
+
+.surface-soft {
+    -fx-background-color: -c-surface-2;
+    -fx-background-radius: 18px;
+    -fx-border-radius: 18px;
+    -fx-border-color: -c-border;
+}
+
+/* =========================
+   Buttons (Material-ish)
+   ========================= */
+.button {
+    -fx-cursor: hand;
+    -fx-font-weight: 700;
+
+    /* IMPORTANT: literal px here avoids Double->Size warnings on some skins */
+    -fx-background-radius: 999px;
+    -fx-border-radius: 999px;
+
+    -fx-padding: 9px 14px 9px 14px;
+}
+
+/* Primary */
+.primary-button {
+    -fx-background-color: -c-primary;
+    -fx-text-fill: white;
+    -fx-effect: -shadow-1;
+}
+.primary-button:hover {
+    -fx-background-color: -c-primary-2;
+}
+.primary-button:pressed {
+    -fx-translate-y: 1;
+}
+
+/* Secondary */
+.secondary-button {
+    -fx-background-color: rgba(17, 24, 39, 0.06);
+    -fx-text-fill: -c-text;
+}
+.secondary-button:hover {
+    -fx-background-color: rgba(17, 24, 39, 0.10);
+}
+
+/* Danger */
+.danger-button {
+    -fx-background-color: rgba(198, 40, 40, 0.92);
+    -fx-text-fill: white;
+}
+.danger-button:hover {
+    -fx-background-color: rgba(198, 40, 40, 1.0);
+}
+
+/* Icon button helper (optional) */
+.icon-button {
+    -fx-background-color: transparent;
+    -fx-padding: 6px;
+    -fx-background-radius: 999px;
+    -fx-border-radius: 999px;
+}
+.icon-button:hover {
+    -fx-background-color: rgba(17,24,39,0.06);
+}
+
+/* =========================
+   Chips / badges
+   ========================= */
+.chip {
+    /* IMPORTANT: literal px */
+    -fx-background-radius: 999px;
+
+    -fx-padding: 5px 10px 5px 10px;
+    -fx-font-size: 11px;
+    -fx-font-weight: 800;
+}
+
+.chip-status {
+    -fx-background-color: rgba(17, 24, 39, 0.06);
+    -fx-text-fill: rgba(17, 24, 39, 0.70);
+}
+
+.chip-accent {
+    -fx-background-color: -c-accent-soft;
+    -fx-text-fill: rgba(123, 30, 58, 0.95);
+}
+
+/* =========================
+   Fields / Inputs
+   ========================= */
+.field-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: -c-muted;
+    -fx-font-weight: 700;
+}
+
+.field-error {
+    -fx-font-size: 11px;
+    -fx-text-fill: rgba(198, 40, 40, 0.95);
+    -fx-font-weight: 700;
+}
+
+/*
+  INPUT NORMALIZATION:
+  Apply styleClass="field" to TextField, ComboBox, DatePicker, Spinner
+  to get consistent height/padding/border/focus.
+*/
+.field {
+    -fx-background-color: -c-surface;
+    -fx-border-color: -c-border;
+    -fx-border-radius: 14px;
+    -fx-background-radius: 14px;
+
+    -fx-padding: 0px;
+    -fx-min-height: -control-h;
+    -fx-pref-height: -control-h;
+    -fx-max-height: -control-h;
+}
+
+/* TextField */
+.text-field.field {
+    -fx-padding: 0 12px 0 12px;
+}
+
+/* ComboBox */
+.combo-box.field {
+    -fx-padding: 0px;
+}
+.combo-box.field > .list-cell {
+    -fx-padding: 0 12px 0 12px;
+    -fx-text-fill: -c-text;
+}
+.combo-box.field > .arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0 10px 0 8px;
+}
+
+/* DatePicker */
+.date-picker.field {
+    -fx-padding: 0px;
+}
+.date-picker.field > .text-field {
+    -fx-padding: 0 12px 0 12px;
+}
+.date-picker.field > .arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0 10px 0 8px;
+}
+
+/* Spinner */
+.spinner.field {
+    -fx-padding: 0px;
+}
+.spinner.field .text-field {
+    -fx-padding: 0 12px 0 12px;
+}
+.spinner.field .increment-arrow-button,
+.spinner.field .decrement-arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 2px 8px 2px 8px;
+}
+
+/* Inner editor surfaces: keep transparent so outer .field paints the surface */
+.field .text-field,
+.field .combo-box-base,
+.field .date-picker,
+.field .spinner,
+.field .spinner .text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 14px;
+    -fx-border-radius: 14px;
+}
+
+/* Focus ring for all */
+.text-field.field:focused,
+.combo-box.field:focused,
+.date-picker.field:focused,
+.spinner.field:focused {
+    -fx-border-color: rgba(123, 30, 58, 0.55);
+    -fx-effect: dropshadow(gaussian, rgba(123, 30, 58, 0.16), 10, 0.22, 0, 2);
+}
+
+/* Prompt text */
+.text-input {
+    -fx-prompt-text-fill: rgba(17, 24, 39, 0.42);
+}
+
+/* ComboBox popup */
+.combo-box-popup .list-view {
+    -fx-background-color: -c-surface;
+    -fx-background-radius: 14px;
+    -fx-border-radius: 14px;
+    -fx-border-color: -c-border;
+    -fx-effect: -shadow-2;
+}
+.combo-box-popup .list-cell {
+    -fx-padding: 10px 12px 10px 12px;
+}
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: rgba(123, 30, 58, 0.08);
+}
+.combo-box-popup .list-cell:selected {
+    -fx-background-color: -c-primary-soft;
+}
+
+/* DatePicker popup */
+.date-picker-popup {
+    -fx-background-color: -c-surface;
+    -fx-border-color: -c-border;
+    -fx-effect: -shadow-2;
+}
+
+/* =========================
+   ScrollPane polish
+   ========================= */
+.scroll-pane {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+}
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Subtle scrollbar */
+.scroll-bar:vertical .thumb,
+.scroll-bar:horizontal .thumb {
+    -fx-background-radius: 999px;
+    -fx-background-color: rgba(17, 24, 39, 0.18);
+}
+
+.scroll-bar:vertical .track,
+.scroll-bar:horizontal .track {
+    -fx-background-color: rgba(17, 24, 39, 0.06);
+    -fx-background-radius: 999px;
+}
+
+/* =========================
+   Headers / toolbars
+   ========================= */
+.page-header {
+    -fx-background-color: -c-surface;
+
+    /* IMPORTANT: avoid mixing numbers + lookup vars */
+    -fx-background-radius: 0px 0px 18px 18px;
+
+    -fx-border-color: -c-border;
+    -fx-border-width: 0 0 1px 0;
+    -fx-effect: -shadow-1;
+}
+
+.footer-bar {
+    -fx-background-color: transparent;
+}
+.primary-button .ikonli-font-icon {
+    -fx-icon-color: white;
+}
