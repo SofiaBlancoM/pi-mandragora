@@ -17,7 +17,7 @@ public class Category extends Entity {
     @Builder
     private Category(UUID id, Instant createdAt, Instant updatedAt, String name, String description) {
         super(id, createdAt, updatedAt);
-        if (name == null || name.isBlank()) throw new IllegalArgumentException("Name is required");
+        if (name == null || name.isBlank()) throw new IllegalArgumentException("El nombre es obligatorio");
         this.name = name.trim();
         this.description = (description == null || description.isBlank()) ? null : description.trim();
     }

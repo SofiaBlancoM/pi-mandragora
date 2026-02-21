@@ -6,10 +6,9 @@ import lombok.*;
 import java.time.Instant;
 import java.util.UUID;
 
+
 /**
- * Base Domain Entity.
- * - Identity-based equality (DDD-friendly)
- * - Audit fields align with Supabase columns (created_at, updated_at)
+ * Clase base para las entidades
  */
 @Getter
 @Setter(AccessLevel.PROTECTED)
@@ -21,8 +20,9 @@ public abstract class Entity {
     protected Instant createdAt = Instant.now();
     protected Instant updatedAt;
 
-    public boolean isTransient() {
-        return id == null;
+    @Override
+    public final int hashCode() {
+        return (id == null) ? System.identityHashCode(this) : id.hashCode();
     }
 
     @Override
@@ -32,10 +32,5 @@ public abstract class Entity {
         // Two transient entities are never equal
         if (this.id == null || other.id == null) return false;
         return this.id.equals(other.id);
-    }
-
-    @Override
-    public final int hashCode() {
-        return (id == null) ? System.identityHashCode(this) : id.hashCode();
     }
 }
