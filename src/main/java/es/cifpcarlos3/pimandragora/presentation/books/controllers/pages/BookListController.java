@@ -32,19 +32,16 @@ public class BookListController {
     private static final Logger log =
             LoggerFactory.getLogger(BookListController.class);
 
-    // Manual Dependency injection
     private final AppContext context = AppContext.get();
 
     private final BooksViewModel booksViewModel = context.newBooksViewModel();
     private final FindAllCategoriesUseCase getCategoriesUseCase = context.getFindAllCategoriesUseCase();
 
-    // Single list UI (server-side pagination)
     private final FlowPane cards = new FlowPane();
     private final ScrollPane scroll = new ScrollPane(cards);
 
     private boolean suppressFilterEvents = false;
 
-    // FXML
     @FXML
     private Pagination pagination;
     @FXML
@@ -104,7 +101,7 @@ public class BookListController {
         });
     }
 
-    private Node createCard(BookCardListViewModel cardVm) {
+    private Node createCard(BookCardListViewModel cardListViewModel) {
         try {
             FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(
                     getClass().getResource("/views/components/bookCard/book-card.fxml")
@@ -112,24 +109,24 @@ public class BookListController {
             Node node = loader.load();
 
             BookCardController controller = loader.getController();
-            controller.bind(cardVm);
+            controller.bind(cardListViewModel);
             controller.setOnClick(() -> {
-                log.info("Open book details id={}", cardVm.getId());
+                log.info("Open book details id={}", cardListViewModel.getId());
                 PageNavigator.goTo(
                         PageRoutes.BOOK_DETAILS,
-                        (BookDetailsController c) -> c.setBookId(cardVm.getId())
+                        (BookDetailsController bookDetailsController) -> bookDetailsController.setBookId(cardListViewModel.getId())
                 );
             });
 
             return node;
         } catch (IOException e) {
             log.error("Failed to load book-card.fxml", e);
-            throw new RuntimeException("Failed to load book-card.fxml", e);
+            throw new RuntimeException("Error al cargar el book-card.fxml", e);
         }
     }
 
     private void setupFilters() {
-        // data
+
         statusFilter.getItems().setAll(
                 Arrays.stream(BookStatus.values())
                         .sorted(Comparator.comparing(BookStatus::getDisplayName))
@@ -143,12 +140,10 @@ public class BookListController {
             categoryFilter.getItems().setAll(getCategoriesUseCase.execute());
             log.debug("Categories loaded count={}", categoryFilter.getItems().size());
         } catch (Exception ex) {
-            // Category load failure shouldn't crash the whole page
             log.warn("Failed to load categories for filter", ex);
             categoryFilter.getItems().clear();
         }
 
-        // renderers (unchanged)
         statusFilter.setCellFactory(cb -> new ListCell<>() {
             @Override
             protected void updateItem(BookStatus item, boolean empty) {
@@ -194,32 +189,31 @@ public class BookListController {
             }
         });
 
-        // listeners
-        searchField.textProperty().addListener((obs, o, n) -> {
+        searchField.textProperty().addListener((observableValue, oldValue, newValue) -> {
             if (suppressFilterEvents) return;
-            log.debug("Filter changed: searchText={}", n);
-            booksViewModel.searchTextProperty().set(n);
+            log.debug("Filter changed: searchText={}", newValue);
+            booksViewModel.searchTextProperty().set(newValue);
             goToFirstPageAndReload();
         });
 
-        statusFilter.valueProperty().addListener((obs, o, n) -> {
+        statusFilter.valueProperty().addListener((observableValue, oldValue, newValue) -> {
             if (suppressFilterEvents) return;
-            log.debug("Filter changed: status={}", n);
-            booksViewModel.statusProperty().set(n);
+            log.debug("Filter changed: status={}", newValue);
+            booksViewModel.statusProperty().set(newValue);
             goToFirstPageAndReload();
         });
 
-        categoryFilter.valueProperty().addListener((obs, o, n) -> {
+        categoryFilter.valueProperty().addListener((observableValue, oldValue, newValue) -> {
             if (suppressFilterEvents) return;
-            log.debug("Filter changed: categoryId={}", n == null ? null : n.id());
-            booksViewModel.categoryIdProperty().set(n == null ? null : n.id());
+            log.debug("Filter changed: categoryId={}", newValue == null ? null : newValue.id());
+            booksViewModel.categoryIdProperty().set(newValue == null ? null : newValue.id());
             goToFirstPageAndReload();
         });
 
-        sortFilter.valueProperty().addListener((obs, o, n) -> {
+        sortFilter.valueProperty().addListener((observableValue, oldValue, newValue) -> {
             if (suppressFilterEvents) return;
-            log.debug("Filter changed: sort={}", n);
-            booksViewModel.sortProperty().set(n);
+            log.debug("Filter changed: sort={}", newValue);
+            booksViewModel.sortProperty().set(newValue);
             goToFirstPageAndReload();
         });
     }
@@ -238,8 +232,8 @@ public class BookListController {
         });
     }
 
-    private static String toLabel(GetBooksQuery.Sort s) {
-        return switch (s) {
+    private static String toLabel(GetBooksQuery.Sort sort) {
+        return switch (sort) {
             case CREATED_AT_DESC -> "Actualizados recientemente";
             case TITLE_ASC -> "Título Asc";
             case TITLE_DESC -> "Título Desc";
@@ -268,19 +262,19 @@ public class BookListController {
     private void setupPagination() {
         pagination.setPageFactory(pageIndex -> scroll);
 
-        pagination.currentPageIndexProperty().addListener((obs, o, n) -> {
+        pagination.currentPageIndexProperty().addListener((observableValue, oldValue, newValue) -> {
             if (suppressFilterEvents) return;
-            log.debug("Pagination changed: pageIndex={}", n);
-            booksViewModel.loadPage(n.intValue());
+            log.debug("Pagination changed: pageIndex={}", newValue);
+            booksViewModel.loadPage(newValue.intValue());
         });
 
-        booksViewModel.pageCountProperty().addListener((obs, o, n) -> {
-            int pc = Math.max(1, n.intValue());
-            log.debug("Pagination pageCount updated: {}", pc);
+        booksViewModel.pageCountProperty().addListener((observableValue, oldValue, newValue) -> {
+            int pageCount = Math.max(1, newValue.intValue());
+            log.debug("Pagination pageCount updated: {}", pageCount);
 
-            pagination.setPageCount(pc);
+            pagination.setPageCount(pageCount);
 
-            if (pagination.getCurrentPageIndex() >= pc) {
+            if (pagination.getCurrentPageIndex() >= pageCount) {
                 suppressFilterEvents = true;
                 try {
                     pagination.setCurrentPageIndex(0);
@@ -292,26 +286,23 @@ public class BookListController {
     }
 
     private void setupActions() {
-        newBookButton.setOnAction(e -> {
+        newBookButton.setOnAction(event -> {
             log.info("Navigate: Create book");
             PageNavigator.goTo(PageRoutes.BOOK_CREATE);
         });
 
-        refreshButton.setOnAction(e -> {
+        refreshButton.setOnAction(event -> {
             log.info("Refresh books list (reset filters)");
 
             suppressFilterEvents = true;
             try {
-                // Reset UI
                 searchField.clear();
                 statusFilter.getSelectionModel().clearSelection();
                 categoryFilter.getSelectionModel().clearSelection();
                 sortFilter.getSelectionModel().select(GetBooksQuery.Sort.CREATED_AT_DESC);
 
-                // Reset VM
                 booksViewModel.resetFilters();
 
-                // Clear cached signed urls
                 booksViewModel.clearCoverCache();
 
                 goToFirstPageAndReload();

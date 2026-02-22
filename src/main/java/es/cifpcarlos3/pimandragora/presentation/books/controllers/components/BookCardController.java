@@ -36,30 +36,30 @@ public class BookCardController {
     private Runnable onClick = () -> {
     };
 
-    public void bind(BookCardListViewModel vm) {
+    public void bind(BookCardListViewModel viewModel) {
         unbind();
 
-        titleLabel.textProperty().bind(vm.getTitle());
-        authorLabel.textProperty().bind(vm.getAuthorFullName());
-        categoryLabel.textProperty().bind(vm.getCategoryName());
+        titleLabel.textProperty().bind(viewModel.getTitle());
+        authorLabel.textProperty().bind(viewModel.getAuthorFullName());
+        categoryLabel.textProperty().bind(viewModel.getCategoryName());
 
         yearLabel.textProperty().bind(
-                Bindings.when(vm.getYear().greaterThan(0))
-                        .then(vm.getYear().asString("Publicado · %d"))
+                Bindings.when(viewModel.getYear().greaterThan(0))
+                        .then(viewModel.getYear().asString("Publicado · %d"))
                         .otherwise("")
         );
         yearLabel.visibleProperty().bind(yearLabel.textProperty().isNotEmpty());
         yearLabel.managedProperty().bind(yearLabel.visibleProperty());
 
-        priceLabel.textProperty().bind(vm.getPriceText());
+        priceLabel.textProperty().bind(viewModel.getPriceText());
         priceLabel.setVisible(true);
         priceLabel.setManaged(true);
 
-        vm.getCoverImageUrl().addListener((obs, oldV, newV) -> loadCover(newV));
-        loadCover(vm.getCoverImageUrl().get());
+        viewModel.getCoverImageUrl().addListener((obs, oldV, newV) -> loadCover(newV));
+        loadCover(viewModel.getCoverImageUrl().get());
 
-        vm.getStatus().addListener((obs, oldV, newV) -> applyStatus(newV));
-        applyStatus(vm.getStatus().get());
+        viewModel.getStatus().addListener((obs, oldV, newV) -> applyStatus(newV));
+        applyStatus(viewModel.getStatus().get());
     }
 
     private void applyStatus(BookStatus status) {
@@ -114,15 +114,15 @@ public class BookCardController {
         }
 
         try {
-            Image img = new Image(url, true);
-            img.errorProperty().addListener((obs, wasError, isError) -> {
+            Image image = new Image(url, true);
+            image.errorProperty().addListener((obs, wasError, isError) -> {
                 if (isError) coverImageView.setImage(placeholder);
             });
-            img.exceptionProperty().addListener((obs, oldEx, ex) -> {
+            image.exceptionProperty().addListener((obs, oldEx, ex) -> {
                 if (ex != null) coverImageView.setImage(placeholder);
             });
 
-            coverImageView.setImage(img);
+            coverImageView.setImage(image);
         } catch (IllegalArgumentException ex) {
             coverImageView.setImage(placeholder);
         }
@@ -137,8 +137,8 @@ public class BookCardController {
     private void initialize() {
         placeholder = coverImageView.getImage();
 
-        root.setOnMouseClicked(e -> {
-            e.consume();
+        root.setOnMouseClicked(event -> {
+            event.consume();
             onClick.run();
         });
     }

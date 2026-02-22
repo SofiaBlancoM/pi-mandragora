@@ -1,4 +1,3 @@
-/* Root container */
 .sidebar {
     -fx-background-color: rgba(255,255,255,0.88);
     -fx-background-radius: 18;
@@ -7,7 +6,6 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 22, 0.20, 0, 8);
 }
 
-/* Brand header */
 .sidebar-brand {
     -fx-padding: 6 6 8 6;
 }
@@ -39,7 +37,6 @@
     -fx-text-fill: rgba(0,0,0,0.52);
 }
 
-/* User card */
 .user-card {
     -fx-padding: 10;
     -fx-background-color: rgba(0,0,0,0.03);
@@ -73,7 +70,6 @@
     -fx-text-fill: rgba(0,0,0,0.55);
 }
 
-/* Small icon button (settings/profile) */
 .icon-button {
     -fx-background-radius: 999;
     -fx-background-color: rgba(0,0,0,0.05);
@@ -85,12 +81,10 @@
     -fx-background-color: rgba(0,0,0,0.08);
 }
 
-/* Separator */
 .sidebar-sep {
     -fx-opacity: 0.55;
 }
 
-/* Nav */
 .nav {
     -fx-padding: 2 0 0 0;
 }
@@ -101,7 +95,6 @@
     -fx-border-radius: 14;
     -fx-padding: 10 12 10 12;
     -fx-alignment: CENTER_LEFT;
-
     -fx-font-weight: 800;
     -fx-text-fill: rgba(0,0,0,0.80);
 }
@@ -110,13 +103,11 @@
     -fx-background-color: rgba(0,0,0,0.05);
 }
 
-/* icon inside the button graphic */
 .nav-icon {
     -fx-font-size: 14px;
     -fx-text-fill: rgba(0,0,0,0.70);
 }
 
-/* Optional "active" state (we’ll wire it later in controller) */
 .nav-item.active {
     -fx-background-color: rgba(117, 0, 33, 0.12);
     -fx-border-color: rgba(117, 0, 33, 0.18);
@@ -127,7 +118,6 @@
     -fx-text-fill: rgba(117, 0, 33, 0.95);
 }
 
-/* Footer */
 .sidebar-footer {
     -fx-padding: 6 6 2 6;
 }

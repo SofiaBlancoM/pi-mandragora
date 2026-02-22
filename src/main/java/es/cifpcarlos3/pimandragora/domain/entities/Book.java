@@ -1,10 +1,7 @@
 package es.cifpcarlos3.pimandragora.domain.entities;
 
 import es.cifpcarlos3.pimandragora.domain.enums.BookStatus;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -21,6 +18,7 @@ public class Book extends Entity {
     private UUID authorId;
     private UUID categoryId;
 
+    @Setter
     private String publisher;
     private LocalDate publicationDate;
 
@@ -135,10 +133,6 @@ public class Book extends Entity {
     public void setPublicationDate(LocalDate publicationDate) {
         if (publicationDate == null) throw new IllegalArgumentException("La fecha de publicación es necessaria");
         this.publicationDate = publicationDate;
-    }
-
-    public void setPublisher(String publisher) {
-        this.publisher = publisher.trim();
     }
 
     public void updateCoverImage(String newPath) {

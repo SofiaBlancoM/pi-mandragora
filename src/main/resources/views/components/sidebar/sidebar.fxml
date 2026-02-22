@@ -15,7 +15,6 @@
         <Insets top="18" right="16" bottom="16" left="16"/>
     </padding>
 
-    <!-- Brand -->
     <HBox spacing="10" alignment="CENTER_LEFT" styleClass="sidebar-brand">
         <StackPane styleClass="brand-mark">
             <Label text="M" styleClass="brand-mark-text"/>
@@ -27,7 +26,6 @@
         </VBox>
     </HBox>
 
-    <!-- User -->
     <HBox spacing="10" alignment="CENTER_LEFT" styleClass="user-card">
         <StackPane styleClass="avatar">
             <Label text="P" styleClass="avatar-text"/>
@@ -46,7 +44,6 @@
 
     <Separator styleClass="sidebar-sep"/>
 
-    <!-- Nav -->
     <VBox spacing="8" styleClass="nav">
 
         <Button fx:id="booksButton" maxWidth="Infinity" onAction="#goToBooks" styleClass="nav-item" text="Libros">
@@ -85,7 +82,6 @@
 
     <Pane VBox.vgrow="ALWAYS"/>
 
-    <!-- Footer -->
     <VBox spacing="6" styleClass="sidebar-footer">
         <Button fx:id="logoutButton"
                 maxWidth="Infinity"
