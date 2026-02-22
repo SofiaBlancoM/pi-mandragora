@@ -1,7 +1,7 @@
 package es.cifpcarlos3.pimandragora.presentation.books.controllers.pages;
 
-import es.cifpcarlos3.pimandragora.application.authors.usecases.findallauthors.FindAllAuthorsUseCase;
-import es.cifpcarlos3.pimandragora.application.authors.usecases.findallauthors.dtos.FindAllAuthorsResponse;
+import es.cifpcarlos3.pimandragora.application.authors.usecases.FindAllAuthorsUseCase;
+import es.cifpcarlos3.pimandragora.application.authors.usecases.dtos.FindAllAuthorsResponse;
 import es.cifpcarlos3.pimandragora.application.books.usecases.delete.DeleteBookUseCase;
 import es.cifpcarlos3.pimandragora.application.books.usecases.getbyid.GetBookByIdUseCase;
 import es.cifpcarlos3.pimandragora.application.books.usecases.getbyid.dtos.GetBookByIdResponse;

@@ -25,7 +25,7 @@ public record SupabaseUserProfileRepository(PostgreClient postgreClient) impleme
         query.put("id", "eq." + id);
         query.put("select", "id,username,display_name,role,created_at");
 
-        SupabaseProfileRow row = postgreClient.getSingleOrNull("profiles", query, SupabaseProfileRow.class);
+        SupabaseProfileRow row = postgreClient.getSingle("profiles", query, SupabaseProfileRow.class);
         if (row == null) return Optional.empty();
 
         return Optional.of(toDomain(row));

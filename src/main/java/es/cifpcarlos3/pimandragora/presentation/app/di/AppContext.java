@@ -2,7 +2,8 @@ package es.cifpcarlos3.pimandragora.presentation.app.di;
 
 import es.cifpcarlos3.pimandragora.application.auth.dtos.AuthSessionDto;
 import es.cifpcarlos3.pimandragora.application.auth.dtos.AuthUserDto;
-import es.cifpcarlos3.pimandragora.application.authors.usecases.findallauthors.FindAllAuthorsUseCase;
+import es.cifpcarlos3.pimandragora.application.authors.usecases.FindAllAuthorsUseCase;
+import es.cifpcarlos3.pimandragora.application.authors.usecases.dtos.CreateAuthorUseCase;
 import es.cifpcarlos3.pimandragora.application.books.usecases.create.CreateBookUseCase;
 import es.cifpcarlos3.pimandragora.application.books.usecases.delete.DeleteBookUseCase;
 import es.cifpcarlos3.pimandragora.application.books.usecases.getbooks.GetBooksUseCase;
@@ -15,6 +16,7 @@ import es.cifpcarlos3.pimandragora.application.categories.usecases.findcategoryb
 import es.cifpcarlos3.pimandragora.application.common.images.CoverImageUrlGenerator;
 import es.cifpcarlos3.pimandragora.application.userprofile.usecases.getcurrentuser.GetCurrentUserUseCase;
 import es.cifpcarlos3.pimandragora.infrastructure.auth.SupabaseAuthClient;
+import es.cifpcarlos3.pimandragora.infrastructure.data.repositories.authors.SupabaseAuthorCommandRepository;
 import es.cifpcarlos3.pimandragora.infrastructure.data.repositories.authors.SupabaseAuthorQueryRepository;
 import es.cifpcarlos3.pimandragora.infrastructure.data.repositories.books.SupabaseBookQueryRepository;
 import es.cifpcarlos3.pimandragora.infrastructure.data.repositories.books.SupabaseBookRepository;
@@ -24,18 +26,17 @@ import es.cifpcarlos3.pimandragora.infrastructure.data.supabase.PostgreClient;
 import es.cifpcarlos3.pimandragora.infrastructure.data.supabase.StorageApi;
 import es.cifpcarlos3.pimandragora.infrastructure.data.supabase.SupabaseHttpClient;
 import es.cifpcarlos3.pimandragora.infrastructure.data.supabase.SupabaseSession;
+import es.cifpcarlos3.pimandragora.infrastructure.external.WikipediaClient;
 import es.cifpcarlos3.pimandragora.infrastructure.images.SupabaseBookCoverImageStorage;
 import es.cifpcarlos3.pimandragora.infrastructure.images.SupabaseCoverImageUrlGenerator;
 import es.cifpcarlos3.pimandragora.presentation.app.config.AppConfig;
 import es.cifpcarlos3.pimandragora.presentation.app.config.PropertyKey;
 import es.cifpcarlos3.pimandragora.presentation.app.constants.ConfigConstants;
+import es.cifpcarlos3.pimandragora.presentation.authors.viewmodels.AuthorsViewModel;
 import es.cifpcarlos3.pimandragora.presentation.books.viewmodels.BooksViewModel;
 import lombok.AccessLevel;
 import lombok.Getter;
 
-/**
- * Inyección de dependencias manual
- */
 public final class AppContext {
 
     private static volatile AppContext INSTANCE;
@@ -47,6 +48,10 @@ public final class AppContext {
     private final PostgreClient postgrest;
     @Getter(AccessLevel.NONE)
     private final StorageApi storageApi;
+
+    // ESTO ES LO QUE TE FALTABA DECLARAR (Captura 4)
+    private final WikipediaClient wikipediaClient;
+    private final SupabaseAuthorCommandRepository authorCommandRepository;
 
     // Application casos de uso
     @Getter
@@ -68,8 +73,7 @@ public final class AppContext {
     @Getter
     private final GetCurrentUserUseCase getCurrentUserUseCase;
 
-
-    //Configuración .properties
+    // Configuración
     int pageSize = AppConfig.getInt(PropertyKey.BOOKS_PAGE_SIZE, ConfigConstants.DEFAULT_BOOKS_PAGE_SIZE);
     int signedUrlTimeinSeconds = AppConfig.getInt(PropertyKey.SIGNED_URL_TTL_SECONDS, ConfigConstants.DEFAULT_SIGNED_URL_TTL);
 
@@ -80,13 +84,17 @@ public final class AppContext {
         this.postgrest = new PostgreClient(supabase);
         this.storageApi = new StorageApi(supabase);
 
+        // Inicializamos los campos nuevos
+        this.wikipediaClient = new WikipediaClient();
+        this.authorCommandRepository = new SupabaseAuthorCommandRepository(postgrest);
+
         var bookQueryRepository = new SupabaseBookQueryRepository(postgrest);
         var bookRepository = new SupabaseBookRepository(postgrest);
         var userProfileRepository = new SupabaseUserProfileRepository(postgrest);
         var coverStorage = new SupabaseBookCoverImageStorage(storageApi);
+        var authorQueryRepository = new SupabaseAuthorQueryRepository(postgrest);
 
         this.authClient = new SupabaseAuthClient(supabase);
-
         this.getBooksUseCase = new GetBooksUseCase(bookQueryRepository);
         this.findAllCategoriesUseCase = new FindAllCategoriesUseCase(new SupabaseCategoryQueryRepository(postgrest));
 
@@ -95,7 +103,8 @@ public final class AppContext {
         this.updateBookUseCase = new UpdateBookUseCase(bookRepository, coverStorage);
         this.deleteBookUseCase = new DeleteBookUseCase(bookRepository, coverStorage);
 
-        this.findAllAuthorsUseCase = new FindAllAuthorsUseCase(new SupabaseAuthorQueryRepository(postgrest));
+        // Ahora coinciden los 3 argumentos con los 3 campos
+        this.findAllAuthorsUseCase = new FindAllAuthorsUseCase(authorQueryRepository, authorCommandRepository, wikipediaClient);
         this.getCurrentUserUseCase = new GetCurrentUserUseCase(authClient, userProfileRepository);
     }
 
@@ -126,8 +135,9 @@ public final class AppContext {
 
     public AuthSessionDto login(String email, String password) {
         AuthSessionDto authSessionDto = authClient.login(email, password);
-
         AuthUserDto user = authClient.getCurrentUser();
+
+        // CORRECCIÓN: Usamos Generator (el nombre que tienes en tus archivos)
         CoverImageUrlGenerator coverResolver = new SupabaseCoverImageUrlGenerator(storageApi, this.signedUrlTimeinSeconds);
 
         replaceSession(new SessionContext(user, coverResolver));
@@ -158,9 +168,19 @@ public final class AppContext {
     public BooksViewModel newBooksViewModel() {
         return new BooksViewModel(getBooksUseCase, session().coverResolver(), this.pageSize);
     }
+    public AuthorsViewModel newAuthorsViewModel() {
+        return new AuthorsViewModel(findAllAuthorsUseCase);
+    }
 
     public SessionContext session() {
         if (session == null) throw new IllegalStateException("Usuario no logueado");
         return session;
+    }
+    public CreateAuthorUseCase getCreateAuthorUseCase() {
+        return new CreateAuthorUseCase(authorCommandRepository);
+    }
+
+    public SupabaseAuthorCommandRepository getAuthorCommandRepository() {
+        return this.authorCommandRepository;
     }
 }

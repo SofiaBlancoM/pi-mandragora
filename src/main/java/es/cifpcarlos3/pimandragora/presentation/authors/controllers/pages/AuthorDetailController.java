@@ -1,14 +1,13 @@
 package es.cifpcarlos3.pimandragora.presentation.authors.controllers.pages;
 
+import es.cifpcarlos3.pimandragora.infrastructure.data.repositories.authors.SupabaseAuthorCommandRepository;
+import es.cifpcarlos3.pimandragora.infrastructure.external.WikipediaClient;
 import es.cifpcarlos3.pimandragora.presentation.app.di.AppContext;
 import es.cifpcarlos3.pimandragora.presentation.app.navigation.PageNavigator;
 import es.cifpcarlos3.pimandragora.presentation.app.navigation.routes.PageRoutes;
 import es.cifpcarlos3.pimandragora.presentation.authors.viewmodels.AuthorDetailViewModel;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +30,7 @@ public class AuthorDetailController {
 
         var getUseCase = new es.cifpcarlos3.pimandragora.application.authors.usecases.dtos.GetAuthorDetailUseCase(
                 new es.cifpcarlos3.pimandragora.infrastructure.data.repositories.authors.SupabaseAuthorQueryRepository(
-                        new es.cifpcarlos3.pimandragora.infrastructure.data.supabase.PostgrestApi(new es.cifpcarlos3.pimandragora.infrastructure.data.supabase.SupabaseHttpClient())
+                        new es.cifpcarlos3.pimandragora.infrastructure.data.supabase.PostgreClient(new es.cifpcarlos3.pimandragora.infrastructure.data.supabase.SupabaseHttpClient())
                 )
         );
         var updateUseCase = new es.cifpcarlos3.pimandragora.application.authors.usecases.dtos.UpdateAuthorUseCase(repo);

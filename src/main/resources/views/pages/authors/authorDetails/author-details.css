@@ -24,9 +24,17 @@
 
 
 .save-button {
-    -fx-background-color: linear-gradient(to bottom, #2ecc71, #27ae60);
+    -fx-background-color: linear-gradient(to bottom, #9b2d41, #802434);
     -fx-background-radius: 30;
-    -fx-effect: dropshadow(three-pass-box, rgba(46,204,113,0.3), 10, 0, 0, 2);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(128, 36, 52, 0.3), 10, 0, 0, 2);
+    -fx-cursor: hand;
+}
+
+.save-button:hover {
+
+    -fx-background-color: linear-gradient(to bottom, #a63248, #91293b);
 }
 
 .save-button:pressed {
