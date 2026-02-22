@@ -42,7 +42,6 @@ public class LoginController {
             AuthSessionDto authSession = context.login(email, password);
 
             log.info("Login success user={}", maskEmail(email));
-            log.debug("Session created currentUser={}", safeUserLabel());
 
             SceneNavigator.setRoot(LayoutRoutes.MAIN_LAYOUT);
 
@@ -72,22 +71,6 @@ public class LoginController {
         return e.charAt(0) + "***" + e.substring(at);
     }
 
-    // -------------------------
-    // Helpers
-    // -------------------------
-
-    private String safeUserLabel() {
-        try {
-            if (!context.isLoggedIn()) return "-";
-            var u = context.session().currentUser();
-            if (u == null) return "-";
-            // keep it minimal; don't dump the whole object
-            return u.email() != null ? maskEmail(u.email()) : "-";
-        } catch (Exception ex) {
-            return "-";
-        }
-    }
-
     @FXML
     private void onLogin() {
         hideError();
@@ -101,7 +84,6 @@ public class LoginController {
             AuthSessionDto authSession = context.login(email, password);
 
             log.info("Login success user={}", maskEmail(email));
-            log.debug("Session created currentUser={}", safeUserLabel());
 
             SceneNavigator.setRoot(LayoutRoutes.MAIN_LAYOUT);
 

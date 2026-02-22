@@ -3,6 +3,7 @@ package es.cifpcarlos3.pimandragora.presentation.books.controllers.pages;
 import es.cifpcarlos3.pimandragora.application.authors.usecases.findallauthors.FindAllAuthorsUseCase;
 import es.cifpcarlos3.pimandragora.application.books.usecases.create.CreateBookUseCase;
 import es.cifpcarlos3.pimandragora.application.books.usecases.create.dtos.CreateBookCommand;
+import es.cifpcarlos3.pimandragora.application.books.usecases.create.dtos.CreateBookResponse;
 import es.cifpcarlos3.pimandragora.application.categories.usecases.findallcategories.FindAllCategoriesUseCase;
 import es.cifpcarlos3.pimandragora.presentation.app.di.AppContext;
 import es.cifpcarlos3.pimandragora.presentation.app.navigation.PageNavigator;
@@ -25,7 +26,6 @@ public class BookCreateController {
     private static final Logger log =
             LoggerFactory.getLogger(BookCreateController.class);
 
-    // Manual wiring (DI)
     private final AppContext context = AppContext.get();
 
     private final FindAllAuthorsUseCase findAllAuthorsUseCase = context.getFindAllAuthorsUseCase();
@@ -35,7 +35,7 @@ public class BookCreateController {
     @FXML
     private StackPane contentHost;
 
-    private BookFormController form;
+    private BookFormController bookFormController;
 
     @FXML
     private void initialize() {
@@ -43,7 +43,7 @@ public class BookCreateController {
 
         loadForm();
         loadReferenceData();
-        form.setCreateMode();
+        bookFormController.setCreateMode();
     }
 
     private void loadForm() {
@@ -52,16 +52,16 @@ public class BookCreateController {
                     getClass().getResource(PageRoutes.BOOK_FORM)
             ));
             Node node = loader.load();
-            this.form = loader.getController();
+            this.bookFormController = loader.getController();
 
-            form.setOnSave(this::onSave);
-            form.setOnCancel(this::onCancel);
+            bookFormController.setOnSave(this::onSave);
+            bookFormController.setOnCancel(this::onCancel);
 
             contentHost.getChildren().setAll(node);
 
         } catch (IOException e) {
             log.error("Failed to load book form FXML: {}", PageRoutes.BOOK_FORM, e);
-            throw new RuntimeException("Failed to load book-form.fxml", e);
+            throw new RuntimeException("Fallo al cargar book-form.fxml", e);
         }
     }
 
@@ -69,9 +69,9 @@ public class BookCreateController {
         log.info("Create book: save requested");
 
         try {
-            var draft = form.getDraft();
+            var draft = bookFormController.getDraft();
 
-            CreateBookCommand cmd = new CreateBookCommand(
+            CreateBookCommand command = new CreateBookCommand(
                     draft.isbn(),
                     draft.title(),
                     draft.authorId(),
@@ -84,21 +84,20 @@ public class BookCreateController {
                     draft.newCoverFile()
             );
 
-            var created = createBookUseCase.execute(cmd);
+            CreateBookResponse created = createBookUseCase.execute(command);
 
             log.info("Create book: success id={}", created.id());
 
             showInfo();
 
-            // Navigate to details of created book (recommended for backoffice UX)
             PageNavigator.goTo(
                     PageRoutes.BOOK_DETAILS,
-                    (BookDetailsController c) -> c.setBookId(created.id())
+                    (BookDetailsController controller) -> controller.setBookId(created.id())
             );
 
         } catch (Exception ex) {
             log.warn("Create book: failed", ex);
-            showError("Could not create book", ex);
+            showError("No se pudo crear el libro", ex);
         }
     }
 
@@ -106,8 +105,8 @@ public class BookCreateController {
         Platform.runLater(() -> {
             Alert a = new Alert(Alert.AlertType.INFORMATION);
             a.setTitle("Info");
-            a.setHeaderText("Created");
-            a.setContentText("Book created successfully.");
+            a.setHeaderText("Creado");
+            a.setContentText("Libro creado correctamente");
             a.showAndWait();
         });
     }
@@ -127,13 +126,13 @@ public class BookCreateController {
 
         Alert confirm = new Alert(
                 Alert.AlertType.CONFIRMATION,
-                "Discard changes?",
+                "¿Descartar cambios?",
                 ButtonType.CANCEL, ButtonType.OK
         );
-        confirm.setHeaderText("Cancel creation");
+        confirm.setHeaderText("Cancelar");
 
-        confirm.showAndWait().ifPresent(bt -> {
-            if (bt == ButtonType.OK) {
+        confirm.showAndWait().ifPresent(buttonType -> {
+            if (buttonType == ButtonType.OK) {
                 log.info("Create book: canceled, back to list");
                 PageNavigator.goTo(PageRoutes.BOOKS);
             } else {
@@ -147,8 +146,8 @@ public class BookCreateController {
             var authors = findAllAuthorsUseCase.execute();
             var categories = findAllCategoriesUseCase.execute();
 
-            form.setAuthors(authors);
-            form.setCategories(categories);
+            bookFormController.setAuthors(authors);
+            bookFormController.setCategories(categories);
 
             log.debug("Create book: reference data loaded authors={} categories={}",
                     authors.size(),
@@ -157,7 +156,7 @@ public class BookCreateController {
 
         } catch (Exception ex) {
             log.warn("Create book: failed to load authors/categories", ex);
-            showError("Failed to load authors/categories", ex);
+            showError("Error al cargar autores/categorias", ex);
         }
     }
 }
