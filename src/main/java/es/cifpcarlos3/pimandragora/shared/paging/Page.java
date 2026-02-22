@@ -1,6 +1,7 @@
 package es.cifpcarlos3.pimandragora.shared.paging;
 
 import java.util.List;
+import java.util.function.Function;
 
 public record Page<T>(
         List<T> items,
@@ -15,13 +16,21 @@ public record Page<T>(
         if (totalItems < 0) throw new IllegalArgumentException("El total de items debe ser mayor o igual que 0");
     }
 
-    public boolean hasNext() {
-        return page + 1 < totalPages();
-    }
-
     public long totalPages() {
         if (totalItems == 0) return 0;
         return (totalItems + size - 1) / size;
+    }
+
+
+    public <U> Page<U> map(Function<? super T, U> converter) {
+        List<U> mappedItems = this.items.stream()
+                .map(converter)
+                .toList();
+        return new Page<>(mappedItems, this.page, this.size, this.totalItems);
+    }
+
+    public boolean hasNext() {
+        return page + 1 < totalPages();
     }
 
     public boolean hasPrevious() {

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="es.cifpcarlos3.pimandragora.presentation.authors.controllers.pages.AuthorsListController"
+           stylesheets="@authors-list.css"
+           styleClass="page-root">
+
+    <VBox spacing="14" styleClass="page-container" maxWidth="1180">
+        <padding>
+            <Insets top="16" right="16" bottom="16" left="16"/>
+        </padding>
+
+        <VBox spacing="12" styleClass="page-header">
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <VBox spacing="2">
+                    <Label text="Autores" styleClass="page-title"/>
+                    <Label text="Consulta la biografía de autores y añade nuevos autores a la Base de Datos."
+                           styleClass="muted"/>
+                </VBox>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Button text="Borrar filtros" styleClass="secondary-button" fx:id="refreshButton"/>
+                <Button styleClass="primary-button" fx:id="newAuthorButton">
+                    <graphic>
+                        <FontIcon iconLiteral="mdi2a-account-plus-outline" styleClass="nav-icon"/>
+                    </graphic>
+                </Button>
+            </HBox> <HBox alignment="BOTTOM_LEFT" spacing="12" styleClass="filters-bar">
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Búsqueda" styleClass="filter-label"/>
+                <TextField fx:id="searchField"
+                           onKeyReleased="#handleSearch"
+                           promptText="Introduce un autor"
+                           styleClass="search-field"/>
+            </VBox>
+
+            <VBox spacing="4" styleClass="filter-group">
+                <Label text="Ordenar por:" styleClass="filter-label"/>
+                <ComboBox fx:id="sortFilter"
+                          onAction="#handleSort"
+                          styleClass="filter-box"/>
+            </VBox>
+        </HBox>
+        </VBox>
+
+        <VBox spacing="10" styleClass="page-body" VBox.vgrow="ALWAYS">
+            <Pagination fx:id="pagination"
+                        styleClass="authors-pagination"
+                        VBox.vgrow="ALWAYS"/>
+
+            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="footer-bar">
+                <Label fx:id="resultsLabel" text="Cargando autores..." styleClass="muted"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <ProgressIndicator fx:id="loadingIndicator" visible="false" managed="false"
+                                   maxWidth="18" maxHeight="18"/>
+                <Label fx:id="errorLabel" text=" " styleClass="error-text"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</StackPane>

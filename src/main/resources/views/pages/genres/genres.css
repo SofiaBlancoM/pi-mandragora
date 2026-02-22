@@ -1,12 +1,19 @@
+.page-header {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-padding: 24 30;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 15, 0, 0, 4);
+}
+
 .page-title {
-    -fx-font-size: 28px;
+    -fx-font-size: 32px;
     -fx-font-weight: bold;
-    -fx-fill: #333333;
+    -fx-text-fill: #333333;
 }
 
 .muted {
-    -fx-font-size: 14px;
-    -fx-fill: #666666;
+    -fx-font-size: 15px;
+    -fx-text-fill: #666666;
 }
 
 .category-card {

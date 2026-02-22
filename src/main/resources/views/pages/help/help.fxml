@@ -14,8 +14,8 @@
             <Insets top="16" right="16" bottom="16" left="16"/>
         </padding>
 
-        <VBox spacing="12" styleClass="page-header">
-            <VBox spacing="2">
+        <VBox spacing="20" styleClass="page-header">
+            <VBox spacing="4">
                 <Label text="Ayuda" styleClass="page-title"/>
                 <Label text="Manual de usuario y preguntas frecuentes de Mandrágora." styleClass="muted"/>
             </VBox>

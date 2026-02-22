@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="20.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="es.cifpcarlos3.pimandragora.presentation.authors.controllers.pages.AuthorDetailController"
+      stylesheets="@author-details.css"
+      styleClass="root-container">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+
+    <HBox spacing="20.0" VBox.vgrow="ALWAYS">
+        <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+            <Label text="Detalles del Autor" styleClass="header-label"/>
+
+            <Label text="Nombre Completo:" styleClass="field-label" />
+            <TextField fx:id="nameField" styleClass="custom-text-field" />
+
+            <Label text="Biografía:" styleClass="field-label" />
+            <TextArea fx:id="bioArea" VBox.vgrow="ALWAYS" wrapText="true" styleClass="custom-text-area" />
+
+            <HBox spacing="10.0">
+                <Button onAction="#handleSave" text="Guardar Cambios" styleClass="save-button" />
+                <Button onAction="#handleBack" text="Volver" styleClass="back-button" />
+            </HBox>
+        </VBox>
+
+        <VBox spacing="10.0" prefWidth="300.0">
+            <Label text="Libros publicados" styleClass="section-label" />
+            <ListView fx:id="booksListView" VBox.vgrow="ALWAYS" styleClass="books-list" />
+        </VBox>
+    </HBox>
+</VBox>

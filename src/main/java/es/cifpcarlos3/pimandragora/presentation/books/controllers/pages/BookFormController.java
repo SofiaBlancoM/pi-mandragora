@@ -1,6 +1,6 @@
 package es.cifpcarlos3.pimandragora.presentation.books.controllers.pages;
 
-import es.cifpcarlos3.pimandragora.application.authors.usecases.findallauthors.dtos.FindAllAuthorsResponse;
+import es.cifpcarlos3.pimandragora.application.authors.usecases.dtos.FindAllAuthorsResponse;
 import es.cifpcarlos3.pimandragora.application.books.usecases.getbyid.dtos.GetBookByIdResponse;
 import es.cifpcarlos3.pimandragora.application.categories.usecases.findallcategories.dtos.FindAllCategoriesResponse;
 import es.cifpcarlos3.pimandragora.domain.enums.BookStatus;

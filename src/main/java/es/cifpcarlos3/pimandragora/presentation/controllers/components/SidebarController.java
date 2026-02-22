@@ -19,9 +19,7 @@ import org.slf4j.LoggerFactory;
 
 public class SidebarController {
 
-    private static final Logger log =
-            LoggerFactory.getLogger(SidebarController.class);
-
+    private static final Logger log = LoggerFactory.getLogger(SidebarController.class);
     private static final PseudoClass SELECTED = PseudoClass.getPseudoClass("selected");
 
     private final AppContext context = AppContext.get();
@@ -33,6 +31,7 @@ public class SidebarController {
     private Label userNameLabel;
     @FXML
     private Label userEmailLabel;
+
     @FXML
     private Button booksButton;
     @FXML
@@ -56,11 +55,9 @@ public class SidebarController {
 
     private void selectNav(Button button) {
         if (button == null) return;
-
         if (selectedButton != null) {
             selectedButton.pseudoClassStateChanged(SELECTED, false);
         }
-
         selectedButton = button;
         selectedButton.pseudoClassStateChanged(SELECTED, true);
     }
@@ -86,16 +83,15 @@ public class SidebarController {
     public void goToSettings(ActionEvent e) {
         log.info("Navigate: Settings");
         selectNav(settingsButton);
+
     }
 
     public void logout(ActionEvent e) {
         log.info("Logout requested");
-
         try {
             context.logout();
             log.info("Logout completed");
         } catch (Exception ex) {
-
             log.warn("Logout failed (will clear local session anyway)", ex);
         } finally {
             SupabaseSession.clear();
@@ -106,7 +102,6 @@ public class SidebarController {
     @FXML
     private void initialize() {
         log.debug("Sidebar initialized");
-
         setUserLabels("-", "-");
 
         Thread thread = new Thread(this::loadCurrentUser, "sidebar-load-user");
@@ -137,7 +132,6 @@ public class SidebarController {
 
             log.debug("Sidebar user loaded name={} email={}", name, email);
             Platform.runLater(() -> setUserLabels(name, email));
-
         } catch (Exception ex) {
             log.warn("Failed to load current user for sidebar", ex);
             Platform.runLater(() -> setUserLabels("-", "-"));
