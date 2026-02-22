@@ -12,7 +12,6 @@
     -fx-border-color: rgba(0,0,0,0.12);
 }
 
-/* Cover container */
 .cover-container {
     -fx-background-radius: 16px;
     -fx-border-radius: 16px;
@@ -20,7 +19,6 @@
     -fx-padding: 8px;
 }
 
-/* Typography */
 .book-title {
     -fx-font-size: 14px;
     -fx-font-weight: 800;
@@ -37,7 +35,6 @@
     -fx-text-fill: rgba(0,0,0,0.58);
 }
 
-/* Chips */
 .chips-row {
     -fx-padding: 2 0 0 0;
 }
@@ -59,26 +56,20 @@
     -fx-text-fill: rgba(25, 118, 210, 0.95);
 }
 
-/* Badge */
 .status-badge {
     -fx-background-radius: 999;
     -fx-padding: 4 10 4 10;
     -fx-font-size: 10px;
     -fx-font-weight: 800;
     -fx-text-fill: white;
-
-    /* IMPORTANT: do NOT align the label in layout */
     -fx-alignment: center;
-
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 10, 0.15, 0, 2);
 }
 
-/* ACTIVE */
 .book-card.status-active {
-    /* default */
+
 }
 
-/* OUT OF STOCK */
 .book-card.status-outofstock {
     -fx-border-color: rgba(245, 124, 0, 0.40);
 }
@@ -91,12 +82,10 @@
     -fx-background-color: rgba(245, 124, 0, 0.06);
 }
 
-/* slightly dim content */
 .book-card.status-outofstock .content {
     -fx-opacity: 0.92;
 }
 
-/* DISCONTINUED */
 .book-card.status-discontinued {
     -fx-opacity: 0.72;
     -fx-border-color: rgba(198, 40, 40, 0.45);

@@ -18,16 +18,14 @@ import java.util.UUID;
 public class BooksViewModel {
 
     private final GetBooksUseCase getBooksUseCase;
-    private final CoverImageUrlGenerator coverResolver;
+    private final CoverImageUrlGenerator coverImageUrlGenerator;
     private final int pageSize;
 
-    // Filters
     private final StringProperty searchText = new SimpleStringProperty();
     private final ObjectProperty<BookStatus> status = new SimpleObjectProperty<>();
     private final ObjectProperty<UUID> categoryId = new SimpleObjectProperty<>();
     private final ObjectProperty<UUID> authorId = new SimpleObjectProperty<>();
 
-    // State
     @Getter
     private final ObservableList<BookCardListViewModel> items = FXCollections.observableArrayList();
     private final IntegerProperty pageCount = new SimpleIntegerProperty(1);
@@ -37,9 +35,9 @@ public class BooksViewModel {
     private final ObjectProperty<GetBooksQuery.Sort> sort =
             new SimpleObjectProperty<>(GetBooksQuery.Sort.CREATED_AT_DESC);
 
-    public BooksViewModel(GetBooksUseCase getBooksUseCase, CoverImageUrlGenerator coverResolver, int pageSize) {
+    public BooksViewModel(GetBooksUseCase getBooksUseCase, CoverImageUrlGenerator coverImageUrlGenerator, int pageSize) {
         this.getBooksUseCase = getBooksUseCase;
-        this.coverResolver = coverResolver;
+        this.coverImageUrlGenerator = coverImageUrlGenerator;
         this.pageSize = pageSize;
     }
 
@@ -52,7 +50,7 @@ public class BooksViewModel {
     }
 
     public void clearCoverCache() {
-        coverResolver.clear();
+        coverImageUrlGenerator.clear();
     }
 
     public StringProperty errorProperty() {
@@ -87,11 +85,10 @@ public class BooksViewModel {
                     new PageRequest(pageIndex, pageSize)
             );
 
-
             Page<GetBooksListItemResponse> page = getBooksUseCase.execute(query);
 
             Platform.runLater(() -> {
-                items.setAll(page.items().stream().map(this::toCardVm).toList());
+                items.setAll(page.items().stream().map(this::toCardViewModel).toList());
                 pageCount.set((int) Math.max(1, page.totalPages()));
                 totalItems.set(page.totalItems());
                 loading.set(false);
@@ -105,9 +102,9 @@ public class BooksViewModel {
         }
     }
 
-    private BookCardListViewModel toCardVm(GetBooksListItemResponse dto) {
+    private BookCardListViewModel toCardViewModel(GetBooksListItemResponse dto) {
         int year = dto.publicationDate() != null ? dto.publicationDate().getYear() : 0;
-        String coverUrl = coverResolver.generate(dto.coverImagePath());
+        String coverUrl = coverImageUrlGenerator.generate(dto.coverImagePath());
 
         return new BookCardListViewModel(
                 dto.id(),
@@ -122,8 +119,8 @@ public class BooksViewModel {
     }
 
     public void refreshHard() {
-        coverResolver.clear();   // clears signed-url cache
-        resetFilters();          // optional: only if you want refresh to reset filters
+        coverImageUrlGenerator.clear();
+        resetFilters();
         loadPage(0);
     }
 

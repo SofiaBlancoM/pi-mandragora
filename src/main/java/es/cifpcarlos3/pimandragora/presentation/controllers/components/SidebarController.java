@@ -25,25 +25,41 @@ public class SidebarController {
     private final AppContext context = AppContext.get();
     private final GetCurrentUserUseCase getCurrentUserUseCase = context.getGetCurrentUserUseCase();
 
-    @FXML private Button profileButton;
-    @FXML private Label userNameLabel;
-    @FXML private Label userEmailLabel;
+    @FXML
+    private Button profileButton;
+    @FXML
+    private Label userNameLabel;
+    @FXML
+    private Label userEmailLabel;
 
-    @FXML private Button booksButton;
-    @FXML private Button authorButton;
-    @FXML private Button categoryButton;
-    @FXML private Button settingsButton;
-    @FXML private Button helpButton;
-    @FXML private Button logoutButton;
+    @FXML
+    private Button booksButton;
+    @FXML
+    private Button authorButton;
+    @FXML
+    private Button categoryButton;
+    @FXML
+    private Button settingsButton;
+    @FXML
+    private Button helpButton;
+    @FXML
+    private Button logoutButton;
 
     private Button selectedButton;
-
-    // --- Navegación ---
 
     public void goToAuthors(ActionEvent e) {
         log.info("Navigate: Authors");
         selectNav(authorButton);
         PageNavigator.goTo(PageRoutes.AUTHORS);
+    }
+
+    private void selectNav(Button button) {
+        if (button == null) return;
+        if (selectedButton != null) {
+            selectedButton.pseudoClassStateChanged(SELECTED, false);
+        }
+        selectedButton = button;
+        selectedButton.pseudoClassStateChanged(SELECTED, true);
     }
 
     public void goToBooks(ActionEvent e) {
@@ -70,17 +86,6 @@ public class SidebarController {
 
     }
 
-    private void selectNav(Button btn) {
-        if (btn == null) return;
-        if (selectedButton != null) {
-            selectedButton.pseudoClassStateChanged(SELECTED, false);
-        }
-        selectedButton = btn;
-        selectedButton.pseudoClassStateChanged(SELECTED, true);
-    }
-
-
-
     public void logout(ActionEvent e) {
         log.info("Logout requested");
         try {
@@ -99,9 +104,9 @@ public class SidebarController {
         log.debug("Sidebar initialized");
         setUserLabels("-", "-");
 
-        Thread t = new Thread(this::loadCurrentUserSafely, "sidebar-load-user");
-        t.setDaemon(true);
-        t.start();
+        Thread thread = new Thread(this::loadCurrentUser, "sidebar-load-user");
+        thread.setDaemon(true);
+        thread.start();
 
         selectNav(booksButton);
     }
@@ -111,7 +116,7 @@ public class SidebarController {
         if (userEmailLabel != null) userEmailLabel.setText(email);
     }
 
-    private void loadCurrentUserSafely() {
+    private void loadCurrentUser() {
         try {
             if (!SupabaseSession.hasToken()) {
                 log.debug("No session token, sidebar user labels set to default");
@@ -120,10 +125,10 @@ public class SidebarController {
             }
 
             log.debug("Loading current user for sidebar...");
-            GetCurrentUserResponse u = getCurrentUserUseCase.execute();
+            GetCurrentUserResponse currentUserResponse = getCurrentUserUseCase.execute();
 
-            String name = pickBestName(u);
-            String email = safe(u.email());
+            String name = currentUserResponse.displayName();
+            String email = currentUserResponse.email();
 
             log.debug("Sidebar user loaded name={} email={}", name, email);
             Platform.runLater(() -> setUserLabels(name, email));
@@ -133,20 +138,4 @@ public class SidebarController {
         }
     }
 
-    private static String pickBestName(GetCurrentUserResponse u) {
-        if (u == null) return "-";
-        String displayName = safe(u.displayName());
-        if (!displayName.equals("-")) return displayName;
-        String username = safe(u.username());
-        if (!username.equals("-")) return username;
-        String email = safe(u.email());
-        if (!email.equals("-") && email.contains("@")) return email.substring(0, email.indexOf("@"));
-        return "-";
-    }
-
-    private static String safe(String s) {
-        if (s == null) return "-";
-        String x = s.trim();
-        return x.isBlank() ? "-" : x;
-    }
 }

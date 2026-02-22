@@ -18,7 +18,7 @@ Este repositorio sirve como **Proyecto intermodular** para el grado DAM en el Ca
 
 ## 🧱 Stack tecnológico
 
-- **Java 17**
+- **Java 21**
 - **JavaFX**
 - **Arquitectura Clean / Hexagonal (adaptada)**
 - **Supabase** (Auth, Base de datos y Storage)
@@ -91,7 +91,7 @@ Este archivo **no debe subirse a GitHub**.
 
 1. Clonar o importar el proyecto  
 2. Crear el archivo `local.properties`  
-3. Configurar Java 17  
+3. Configurar Java 21  
 4. Ejecutar la aplicación desde el `main` correspondiente  
 5. (Opcional) Usar el autologin para pruebas rápidas  
 

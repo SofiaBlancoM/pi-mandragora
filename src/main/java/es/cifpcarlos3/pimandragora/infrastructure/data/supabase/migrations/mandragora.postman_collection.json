@@ -1,0 +1,137 @@
+{
+  "info": {
+    "_postman_id": "812f1b64-848d-4033-a7bc-52832d0ac374",
+    "name": "PI Mandragora",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "33648098"
+  },
+  "item": [
+    {
+      "name": "Create User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "apiKey",
+            "value": "{{apiKey}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"rne@alu.murciaeduca.es\",\r\n    \"password\": \"123456\",\r\n    \"email_confirm\": true,\r\n    \"user_metadata\": {\r\n      \"display_name\": \"rne\"\r\n    },\r\n    \"app_metadata\": {\r\n      \"provider\": \"email\",\r\n      \"providers\": [\"email\"]\r\n    }\r\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}auth/v1/admin/users",
+          "host": [
+            "{{baseUrl}}auth"
+          ],
+          "path": [
+            "v1",
+            "admin",
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create User Profile",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Prefer",
+            "value": "return=representation"
+          },
+          {
+            "key": "apiKey",
+            "value": "{{apiKey}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"id\": \"d442e31b-0bf5-4ca6-910a-250eb7392da9\",\n    \"username\": \"Lucas\",\n    \"display_name\": \"Lucas\",\n    \"role\": \"USER\"\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://osckqwelythbopxucidv.supabase.co/rest/v1/profiles",
+          "protocol": "https",
+          "host": [
+            "osckqwelythbopxucidv",
+            "supabase",
+            "co"
+          ],
+          "path": [
+            "rest",
+            "v1",
+            "profiles"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "bearerToken",
+      "value": ""
+    },
+    {
+      "key": "baseUrl",
+      "value": ""
+    },
+    {
+      "key": "apiKey",
+      "value": ""
+    }
+  ]
+}

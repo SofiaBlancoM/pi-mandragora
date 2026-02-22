@@ -17,7 +17,6 @@
         <Insets top="12" right="12" bottom="12" left="12"/>
     </padding>
 
-    <!-- Cover -->
     <StackPane styleClass="cover-container">
         <ImageView fx:id="coverImageView"
                    fitHeight="260"
@@ -27,7 +26,6 @@
             <Image url="@../../../assets/images/default-cover-book-image.png"/>
         </ImageView>
 
-        <!-- Badge top-left -->
         <Label fx:id="statusBadge"
                visible="false"
                managed="false"
@@ -35,7 +33,6 @@
                StackPane.alignment="TOP_LEFT"/>
     </StackPane>
 
-    <!-- Text content -->
     <VBox spacing="6" styleClass="content">
         <Label fx:id="titleLabel" wrapText="true" styleClass="book-title"/>
         <Label fx:id="authorLabel" styleClass="book-author"/>

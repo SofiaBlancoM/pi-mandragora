@@ -114,22 +114,19 @@ public class BookFormController {
         );
     }
 
-    private static String trim(String s) {
-        if (s == null) return null;
-        String x = s.trim();
+    private static String trim(String string) {
+        if (string == null) return null;
+        String x = string.trim();
         return x.isBlank() ? null : x;
     }
 
     private static BigDecimal parsePrice(String raw) {
         if (raw == null) return null;
-        String x = raw.trim();
-        if (x.isBlank()) return null;
-        x = x.replace(',', '.');
-        return new BigDecimal(x);
+        String price = raw.trim();
+        if (price.isBlank()) return null;
+        price = price.replace(',', '.');
+        return new BigDecimal(price);
     }
-    // -----------------------------
-    // Public API for page controllers
-    // -----------------------------
 
     public void setAuthors(List<FindAllAuthorsResponse> authors) {
         authorCombo.getItems().setAll(authors);
@@ -142,9 +139,9 @@ public class BookFormController {
             return;
         }
 
-        for (FindAllAuthorsResponse a : authorCombo.getItems()) {
-            if (authorId.equals(a.id())) {
-                authorCombo.getSelectionModel().select(a);
+        for (FindAllAuthorsResponse authorsResponse : authorCombo.getItems()) {
+            if (authorId.equals(authorsResponse.id())) {
+                authorCombo.getSelectionModel().select(authorsResponse);
                 return;
             }
         }
@@ -163,9 +160,9 @@ public class BookFormController {
             return;
         }
 
-        for (FindAllCategoriesResponse c : categoryCombo.getItems()) {
-            if (categoryId.equals(c.id())) {
-                categoryCombo.getSelectionModel().select(c);
+        for (FindAllCategoriesResponse categoriesResponse : categoryCombo.getItems()) {
+            if (categoryId.equals(categoriesResponse.id())) {
+                categoryCombo.getSelectionModel().select(categoriesResponse);
                 return;
             }
         }
@@ -179,8 +176,8 @@ public class BookFormController {
         this.existingCoverPath = null;
         this.newCoverFile = null;
 
-        titleHeader.setText("New book");
-        saveButton.setText("Create");
+        titleHeader.setText("Nuevo libro");
+        saveButton.setText("Crear");
 
         statusChip.setVisible(false);
         statusChip.setManaged(false);
@@ -197,10 +194,6 @@ public class BookFormController {
         clearForm();
         clearErrors();
     }
-
-    // -----------------------------
-    // Internal helpers
-    // -----------------------------
 
     private void clearForm() {
         titleField.clear();
@@ -231,9 +224,9 @@ public class BookFormController {
         hide(formError);
     }
 
-    private static void hide(Label l) {
-        l.setVisible(false);
-        l.setManaged(false);
+    private static void hide(Label label) {
+        label.setVisible(false);
+        label.setManaged(false);
     }
 
     public void setEditMode(GetBookByIdResponse book) {
@@ -242,12 +235,11 @@ public class BookFormController {
         this.existingCoverPath = book.coverImagePath();
         this.newCoverFile = null;
 
-        // store for later in case lists are still empty
         this.pendingAuthorId = book.authorId();
         this.pendingCategoryId = book.categoryId();
 
-        titleHeader.setText("Book details");
-        saveButton.setText("Save changes");
+        titleHeader.setText("Actualizar libro");
+        saveButton.setText("Guardar cambios");
 
         fillFrom(book);
         coverBadge.setText("");
@@ -291,19 +283,38 @@ public class BookFormController {
         };
     }
 
-    public void setOnCancel(Runnable r) {
-        this.onCancel = (r == null) ? () -> {
-        } : r;
+    public void setOnCancel(Runnable runnable) {
+        this.onCancel = (runnable == null) ? () -> {
+        } : runnable;
     }
 
-    public void setOnDelete(Runnable r) {
-        this.onDelete = (r == null) ? () -> {
-        } : r;
+    public void setOnDelete(Runnable runnable) {
+        this.onDelete = (runnable == null) ? () -> {
+        } : runnable;
     }
 
-    public void setOnSave(Runnable r) {
-        this.onSave = (r == null) ? () -> {
-        } : r;
+    public void setOnSave(Runnable runnable) {
+        this.onSave = (runnable == null) ? () -> {
+        } : runnable;
+    }
+
+    public enum Mode {CREATE, EDIT}
+
+    public record BookFormDraft(
+            UUID id,
+            String title,
+            String isbn,
+            UUID authorId,
+            UUID categoryId,
+            String publisher,
+            LocalDate publicationDate,
+            BigDecimal price,
+            Integer stock,
+            BookStatus status,
+            String existingCoverPath,
+            java.nio.file.Path newCoverFile,
+            boolean removeCover
+    ) {
     }
 
     @FXML
@@ -342,9 +353,9 @@ public class BookFormController {
         coverBadge.setVisible(false);
         coverBadge.setManaged(false);
 
-        changeCoverButton.setOnAction(e -> pickNewCoverFile());
+        changeCoverButton.setOnAction(event -> pickNewCoverFile());
 
-        removeCoverButton.setOnAction(e -> {
+        removeCoverButton.setOnAction(event -> {
             newCoverFile = null;
             removeCoverRequested = true;
             existingCoverPath = null;
@@ -398,12 +409,11 @@ public class BookFormController {
         Window owner = root.getScene() != null ? root.getScene().getWindow() : null;
 
         FileChooser fc = new FileChooser();
-        fc.setTitle("Select cover image");
+        fc.setTitle("Seleccionar imagen de portada");
         fc.getExtensionFilters().setAll(
                 new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.webp")
         );
 
-        // ✅ Start in Downloads (best-effort cross-platform)
         File downloads = FilePickerDefaults.defaultInitialDirectory();
         if (downloads != null) {
             fc.setInitialDirectory(downloads);
@@ -416,7 +426,6 @@ public class BookFormController {
         this.newCoverFile = file;
         removeCoverRequested = false;
 
-        // Preview immediately (local file)
         setCoverPreview(new Image(file.toUri().toString(), true));
 
         coverBadge.setText("Nueva portada");
@@ -424,28 +433,8 @@ public class BookFormController {
         coverBadge.setManaged(true);
     }
 
-
     public void setCoverPreview(Image image) {
         coverPreview.setImage(image == null ? placeholderCover : image);
-    }
-
-    public enum Mode {CREATE, EDIT}
-
-    public record BookFormDraft(
-            UUID id,
-            String title,
-            String isbn,
-            UUID authorId,
-            UUID categoryId,
-            String publisher,
-            LocalDate publicationDate,
-            BigDecimal price,
-            Integer stock,
-            BookStatus status,
-            String existingCoverPath,
-            java.nio.file.Path newCoverFile,
-            boolean removeCover
-    ) {
     }
 
 }

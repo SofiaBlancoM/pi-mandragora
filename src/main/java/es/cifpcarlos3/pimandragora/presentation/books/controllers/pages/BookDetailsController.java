@@ -30,9 +30,6 @@ import java.util.UUID;
 
 public class BookDetailsController {
 
-    // -------------------------
-    // Manual wiring (TFG mode)
-    // -------------------------
     private final AppContext context = AppContext.get();
 
     private final GetBookByIdUseCase getBookByIdUseCase = context.getGetBookByIdUseCase();
@@ -41,21 +38,18 @@ public class BookDetailsController {
     private final UpdateBookUseCase updateBookUseCase = context.getUpdateBookUseCase();
     private final DeleteBookUseCase deleteBookUseCase = context.getDeleteBookUseCase();
 
-    // session-scoped resolver (cached signed urls)
     private final CoverImageUrlGenerator coverUrlResolver = context.session().coverResolver();
-    // -------------------------
-    // FXML
-    // -------------------------
+
     @FXML
     private StackPane contentHost;
 
-    private BookFormController form;
+    private BookFormController bookFormController;
 
     private UUID bookId;
 
     public void setBookId(UUID bookId) {
         this.bookId = bookId;
-        if (form != null) loadData();
+        if (bookFormController != null) loadData();
     }
 
     private void loadData() {
@@ -63,12 +57,12 @@ public class BookDetailsController {
 
         try {
             GetBookByIdResponse book = getBookByIdUseCase.execute(bookId);
-            form.setEditMode(book);
+            bookFormController.setEditMode(book);
 
             setCoverPreviewFrom(book.coverImagePath());
 
         } catch (Exception ex) {
-            showError("Failed to load book details", ex);
+            showError("Fallo al cargar los detalles del libro", ex);
         }
     }
 
@@ -76,7 +70,7 @@ public class BookDetailsController {
         if (coverImagePath == null || coverImagePath.isBlank()) return;
 
         String url = coverUrlResolver.generate(coverImagePath);
-        form.setCoverPreview(new Image(url, true));
+        bookFormController.setCoverPreview(new Image(url, true));
     }
 
     private void showError(String title, Exception ex) {
@@ -90,7 +84,7 @@ public class BookDetailsController {
     }
 
     private UpdateBookResponse getUpdateBookResponse() {
-        var draft = form.getDraft();
+        var draft = bookFormController.getDraft();
 
         UpdateBookCommand cmd = new UpdateBookCommand(
                 draft.id(),
@@ -114,7 +108,6 @@ public class BookDetailsController {
     private void initialize() {
         loadForm();
         loadReferenceData();
-        // loadData() runs when setBookId is called
     }
 
     private void loadForm() {
@@ -123,13 +116,13 @@ public class BookDetailsController {
                     getClass().getResource(PageRoutes.BOOK_FORM)
             ));
             Node node = loader.load();
-            this.form = loader.getController();
+            this.bookFormController = loader.getController();
 
             wireFormActions();
 
             contentHost.getChildren().setAll(node);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to load book-form.fxml", e);
+            throw new RuntimeException("Fallo al cargar el book-form.fxml", e);
         }
     }
 
@@ -138,26 +131,26 @@ public class BookDetailsController {
             List<FindAllAuthorsResponse> authors = findAllAuthorsUseCase.execute();
             List<FindAllCategoriesResponse> categories = findAllCategoriesUseCase.execute();
 
-            form.setAuthors(authors);
-            form.setCategories(categories);
+            bookFormController.setAuthors(authors);
+            bookFormController.setCategories(categories);
 
             if (bookId != null) {
                 loadData();
             }
 
         } catch (Exception ex) {
-            showError("Failed to load authors/categories", ex);
+            showError("Fallo al cargar autores/categorias", ex);
         }
     }
 
     private void onCancel() {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
-                "Discard changes?",
+                "¿Descartar cambios?",
                 ButtonType.CANCEL, ButtonType.OK);
-        confirm.setHeaderText("Cancel edit");
+        confirm.setHeaderText("Cancelar");
 
-        confirm.showAndWait().ifPresent(bt -> {
-            if (bt == ButtonType.OK) {
+        confirm.showAndWait().ifPresent(buttonType -> {
+            if (buttonType == ButtonType.OK) {
                 loadData();
             }
         });
@@ -167,22 +160,21 @@ public class BookDetailsController {
         if (bookId == null) return;
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
-                "This will permanently delete the book.\nContinue?",
+                "Vas a borrar este libro de forma permanente.\n¿Continuar?",
                 ButtonType.CANCEL, ButtonType.OK);
-        confirm.setHeaderText("Delete book");
+        confirm.setHeaderText("Borrar libro");
 
         confirm.showAndWait().ifPresent(bt -> {
             if (bt != ButtonType.OK) return;
 
             try {
                 deleteBookUseCase.execute(bookId);
-                showInfo("Deleted", "Book deleted successfully.");
+                showInfo("Borrado", "Libro borrado exitosamente");
 
-                // Navigate back to list
                 PageNavigator.goTo(PageRoutes.BOOKS);
 
             } catch (Exception ex) {
-                showError("Could not delete book", ex);
+                showError("No se pudo eliminar el libro", ex);
             }
         });
     }
@@ -191,18 +183,16 @@ public class BookDetailsController {
         try {
             var updated = getUpdateBookResponse();
 
-            // refresh signed urls (important if cover changed)
             coverUrlResolver.clear();
 
-            // reload data and keep UI consistent
             GetBookByIdResponse reloaded = getBookByIdUseCase.execute(updated.id());
-            form.setEditMode(reloaded);
+            bookFormController.setEditMode(reloaded);
             setCoverPreviewFrom(reloaded.coverImagePath());
 
-            showInfo("Saved", "Book updated successfully.");
+            showInfo("Guardado", "Libro actualizado correctamente");
 
         } catch (Exception ex) {
-            showError("Could not save changes", ex);
+            showError("No se pudieron guardar los cambios", ex);
         }
     }
 
@@ -217,8 +207,8 @@ public class BookDetailsController {
     }
 
     private void wireFormActions() {
-        form.setOnSave(this::onSave);
-        form.setOnCancel(this::onCancel);
-        form.setOnDelete(this::onDelete);
+        bookFormController.setOnSave(this::onSave);
+        bookFormController.setOnCancel(this::onCancel);
+        bookFormController.setOnDelete(this::onDelete);
     }
 }
