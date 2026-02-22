@@ -18,7 +18,7 @@ Este repositorio sirve como **Proyecto intermodular** para el grado DAM en el Ca
 
 ## 🧱 Stack tecnológico
 
-- **Java 17**
+- **Java 21**
 - **JavaFX**
 - **Arquitectura Clean / Hexagonal (adaptada)**
 - **Supabase** (Auth, Base de datos y Storage)
